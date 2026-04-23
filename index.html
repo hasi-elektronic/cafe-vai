@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café VAI — Coffee · Breakfast · Drinks | Vaihingen an der Enz</title>
+    <meta name="description" content="Café VAI in Vaihingen an der Enz — Türkisches Frühstück, Smashburger, Kaffee & Cocktails. Stuttgarter Str. 36.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warm-cream: #FDF6EC;
+            --warm-beige: #F5E6D3;
+            --warm-tan: #D4A574;
+            --warm-brown: #8B6914;
+            --warm-dark: #3C2415;
+            --warm-darker: #2A1810;
+            --warm-coffee: #6F4E37;
+            --warm-gold: #C8A951;
+            --warm-terracotta: #C4754B;
+            --warm-olive: #7A7A52;
+            --warm-rose: #D4917A;
+            --white: #FFFDF9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--warm-cream);
+            color: var(--warm-dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(42, 24, 16, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0.6rem 2rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--warm-cream);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo span {
+            color: var(--warm-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--warm-cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--warm-gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--warm-gold); }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            width: 28px;
+            height: 2px;
+            background: var(--warm-cream);
+            transition: all 0.3s;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, var(--warm-darker) 0%, var(--warm-coffee) 50%, var(--warm-terracotta) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--warm-gold);
+            border-radius: 50px;
+            color: var(--warm-gold);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease 0.3s both;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            color: var(--warm-cream);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--warm-gold);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--warm-beige);
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.7s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.9s both;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--warm-gold);
+            color: var(--warm-darker);
+        }
+
+        .btn-primary:hover {
+            background: var(--warm-cream);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--warm-cream);
+            color: var(--warm-cream);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--warm-cream);
+            color: var(--warm-darker);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--warm-gold);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header .label {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--warm-terracotta);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--warm-dark);
+            font-weight: 600;
+        }
+
+        .section-header h2 em {
+            font-style: italic;
+            color: var(--warm-coffee);
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--warm-gold);
+            margin: 1.5rem auto 0;
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            background: var(--white);
+        }
+
+        .about-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--warm-coffee), var(--warm-terracotta));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::after {
+            content: '☕';
+            font-size: 8rem;
+            opacity: 0.3;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--warm-dark);
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--warm-coffee);
+            margin-bottom: 1.2rem;
+            font-weight: 300;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--warm-dark);
+        }
+
+        .about-feature .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--warm-beige);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== MENU HIGHLIGHTS ===== */
+        .menu {
+            background: var(--warm-darker);
+            color: var(--warm-cream);
+        }
+
+        .menu .section-header h2 { color: var(--warm-cream); }
+        .menu .section-header .label { color: var(--warm-gold); }
+
+        .menu-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .menu-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .menu-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--warm-cream);
+        }
+
+        .menu-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 1.2rem;
+            font-weight: 300;
+        }
+
+        .menu-card .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--warm-gold);
+            font-weight: 600;
+        }
+
+        .menu-card .price small {
+            font-size: 0.75rem;
+            font-family: 'DM Sans', sans-serif;
+            color: rgba(255,255,255,0.4);
+            font-weight: 400;
+        }
+
+        /* ===== AMBIANCE ===== */
+        .ambiance {
+            background: var(--warm-beige);
+        }
+
+        .ambiance-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .ambiance-card {
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .ambiance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+
+        .ambiance-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .ambiance-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--warm-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .ambiance-card p {
+            font-size: 0.8rem;
+            color: var(--warm-coffee);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ===== HOURS & LOCATION ===== */
+        .contact {
+            background: var(--white);
+        }
+
+        .contact-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .hours-card, .location-card {
+            background: var(--warm-cream);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .hours-card h3, .location-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--warm-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 0.9rem;
+        }
+
+        .hours-row:last-child { border-bottom: none; }
+
+        .hours-row .day {
+            font-weight: 500;
+            color: var(--warm-dark);
+        }
+
+        .hours-row .time {
+            color: var(--warm-coffee);
+            font-weight: 300;
+        }
+
+        .hours-row.closed .time {
+            color: var(--warm-terracotta);
+        }
+
+        .location-card p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--warm-coffee);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .location-card .address {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--warm-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .location-card .phone {
+            font-size: 1.2rem;
+            color: var(--warm-terracotta);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .location-card .phone:hover { color: var(--warm-coffee); }
+
+        .map-container {
+            margin-top: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 200px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--warm-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--warm-terracotta);
+            transform: translateY(-3px);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--warm-cream);
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta {
+            background: linear-gradient(135deg, var(--warm-coffee), var(--warm-terracotta));
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--warm-cream);
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--warm-beige);
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta .btn-primary {
+            background: var(--warm-cream);
+            color: var(--warm-darker);
+        }
+
+        .cta .btn-primary:hover {
+            background: var(--warm-gold);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--warm-darker);
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        footer a {
+            color: var(--warm-gold);
+            text-decoration: none;
+        }
+
+        footer .footer-line {
+            margin-bottom: 0.3rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(42, 24, 16, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .nav-links.active { display: flex; }
+
+            .nav-toggle { display: flex; }
+
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-image { height: 300px; }
+
+            .menu-grid { grid-template-columns: 1fr; }
+
+            .ambiance-grid { grid-template-columns: 1fr 1fr; }
+
+            .contact-grid { grid-template-columns: 1fr; }
+
+            .hero { min-height: 600px; }
+        }
+
+        @media (max-width: 480px) {
+            .ambiance-grid { grid-template-columns: 1fr; }
+            .about-features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">Café <span>VAI</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" onclick="closeMenu()">Über uns</a></li>
+                <li><a href="#menu" onclick="closeMenu()">Speisekarte</a></li>
+                <li><a href="#ambiance" onclick="closeMenu()">Erlebnis</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Kontakt</a></li>
+                <li><a href="https://reservierung.gastroguide.de/Cafe%20Vai/292374" target="_blank" onclick="closeMenu()">Reservieren</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Vaihingen an der Enz</span>
+            <h1>Coffee · Breakfast<br><em>& Drinks</em></h1>
+            <p>Wo sich die herzliche Vielfalt der deutschen Küche mit der würzigen Wärme der türkischen Tradition trifft.</p>
+            <div class="hero-buttons">
+                <a href="https://reservierung.gastroguide.de/Cafe%20Vai/292374" target="_blank" class="btn btn-primary">Tisch reservieren</a>
+                <a href="#menu" class="btn btn-outline">Speisekarte</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="section-header fade-in">
+            <span class="label">Willkommen</span>
+            <h2>Mehr als nur ein <em>Café</em></h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-image fade-in"></div>
+            <div class="about-text fade-in">
+                <h3>Genuss trifft Gemütlichkeit</h3>
+                <p>Im Herzen von Vaihingen an der Enz verbinden wir das Beste zweier Welten: deutsche Kaffeekultur und türkische Gastfreundschaft. Unser Café ist ein Ort der Begegnung, des Genusses und der Entspannung.</p>
+                <p>Ob zum gemütlichen Frühstück, einem schnellen Mittagslunch oder entspannten Abend mit Cocktails — bei uns fühlen Sie sich wie zu Hause.</p>
+                <div class="about-features">
+                    <div class="about-feature"><div class="icon">☕</div><span>Specialty Coffee</span></div>
+                    <div class="about-feature"><div class="icon">🥐</div><span>Frühstück</span></div>
+                    <div class="about-feature"><div class="icon">🍔</div><span>Smashburger</span></div>
+                    <div class="about-feature"><div class="icon">🍸</div><span>Cocktails</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Highlights -->
+    <section class="menu" id="menu">
+        <div class="section-header fade-in">
+            <span class="label">Unsere Highlights</span>
+            <h2>Für jeden Geschmack <em>etwas</em></h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card fade-in">
+                <span class="emoji">🫖</span>
+                <h3>Türkisches Frühstück</h3>
+                <p>Serpme Kahvaltı — ein kulinarisches Erlebnis mit Käse, Aufstrichen, Sucuk, Ei, frischem Brot und vielem mehr. Für zwei Personen.</p>
+                <div class="price">€38,90 <small>für 2 Pers.</small></div>
+            </div>
+            <div class="menu-card fade-in">
+                <span class="emoji">🍔</span>
+                <h3>Smashburger Menü</h3>
+                <p>Auf heißer Grillplatte zubereitet mit regionalem Fleisch. Knusprig, saftig und unwiderstehlich. Dienstag bis Freitag als Mittagsangebot.</p>
+                <div class="price">€14,90 <small>Di–Fr Mittag</small></div>
+            </div>
+            <div class="menu-card fade-in">
+                <span class="emoji">☕</span>
+                <h3>Café VAI Frühstück</h3>
+                <p>Frisches Brot, Käse, Aufstriche, Marmelade und ein Heißgetränk nach Wahl. Der perfekte Start in den Tag.</p>
+                <div class="price">€13,90 <small>pro Person</small></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ambiance -->
+    <section class="ambiance" id="ambiance">
+        <div class="section-header fade-in">
+            <span class="label">Das Erlebnis</span>
+            <h2>Fühlen Sie sich <em>willkommen</em></h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="ambiance-grid">
+            <div class="ambiance-card fade-in">
+                <span class="emoji">☀️</span>
+                <h4>Morgens</h4>
+                <p>Starten Sie den Tag mit frischem Kaffee und einem liebevoll zubereiteten Frühstück.</p>
+            </div>
+            <div class="ambiance-card fade-in">
+                <span class="emoji">🥙</span>
+                <h4>Mittags</h4>
+                <p>Smashburger, leichte Gerichte und erfrischende Smoothies für die Mittagspause.</p>
+            </div>
+            <div class="ambiance-card fade-in">
+                <span class="emoji">🌅</span>
+                <h4>Nachmittags</h4>
+                <p>Kaffee und Kuchen in entspannter Atmosphäre — die perfekte Auszeit.</p>
+            </div>
+            <div class="ambiance-card fade-in">
+                <span class="emoji">🍸</span>
+                <h4>Abends</h4>
+                <p>Cocktails, Gin Tonic und Caipirinha — der perfekte Ausklang eines schönen Tages.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Hours -->
+    <section class="contact" id="contact">
+        <div class="section-header fade-in">
+            <span class="label">Besuchen Sie uns</span>
+            <h2>Öffnungszeiten & <em>Kontakt</em></h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="contact-grid">
+            <div class="hours-card fade-in">
+                <h3>🕐 Öffnungszeiten</h3>
+                <div class="hours-row closed"><span class="day">Montag</span><span class="time">Geschlossen</span></div>
+                <div class="hours-row"><span class="day">Dienstag</span><span class="time">09:00 – 14:00 · 17:00 – 20:00</span></div>
+                <div class="hours-row"><span class="day">Mittwoch</span><span class="time">09:00 – 14:00 · 17:00 – 20:00</span></div>
+                <div class="hours-row"><span class="day">Donnerstag</span><span class="time">09:00 – 14:00 · 17:00 – 20:00</span></div>
+                <div class="hours-row"><span class="day">Freitag</span><span class="time">09:00 – 14:00 · 17:00 – 05:00</span></div>
+                <div class="hours-row"><span class="day">Samstag</span><span class="time">09:00 – 05:00</span></div>
+                <div class="hours-row"><span class="day">Sonntag</span><span class="time">09:00 – 18:00</span></div>
+            </div>
+            <div class="location-card fade-in">
+                <h3>📍 So finden Sie uns</h3>
+                <p class="address">Stuttgarter Str. 36<br>71665 Vaihingen an der Enz</p>
+                <a href="tel:+4970427702411" class="phone">07042 / 770 24 11</a>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.5!2d8.9594!3d48.9314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDU1JzUzLjAiTiA4wrA1NyczNS44IkU!5e0!3m2!1sde!2sde!4v1" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/cafevai" target="_blank" class="social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100088737080472" target="_blank" class="social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-3.047v-3.47h3.047v-2.642c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385c5.738-.9 10.126-5.864 10.126-11.854z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Lust auf einen Besuch?</h2>
+        <p>Reservieren Sie jetzt Ihren Tisch und genießen Sie unvergessliche Momente bei Café VAI.</p>
+        <a href="https://reservierung.gastroguide.de/Cafe%20Vai/292374" target="_blank" class="btn btn-primary">Jetzt reservieren</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-line">Café VAI — Stuttgarter Str. 36, 71665 Vaihingen an der Enz</div>
+        <div class="footer-line">© 2026 Café VAI. Website by <a href="https://hasi-elektronik.de" target="_blank">Hasi Elektronic</a></div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Mobile menu
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+        function closeMenu() {
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
