@@ -127,7 +127,10 @@
   function toast(msg) { const el = $('#toastg'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 1600); }
 
   /* ---------- Dialoge ---------- */
-  function openD(d) { if (!d.open) d.showModal(); }
+  function openD(d) {
+    if (d.open) return; d.showModal();
+    const w = $('.dwrap', d); if (w) { w.tabIndex = -1; w.focus({ preventScroll: true }); w.scrollTop = 0; }
+  }
   function closeD(d) {
     if (!d.open) return;
     if (rm) { d.close(); return; }

@@ -257,7 +257,7 @@ page = f'''<!DOCTYPE html>
 {chr(10).join(body)}
 <p class="none" id="none" hidden>{U("none")}</p>
 </div>
-<footer class="kfoot"><p>{U("foot")}</p><button class="btn btn-ghost" id="printbtn" type="button">{U("print")}</button></footer>
+<footer class="kfoot"><p>{U("foot")}</p><div class="fl"><a class="btn btn-amber" href="index.html#besuch">Tisch reservieren</a><button class="btn btn-ghost" id="printbtn" type="button">{U("print")}</button></div></footer>
 </main>
 
 <nav class="tabs" id="tabs" aria-label="Kategorien">{"".join(tabs)}</nav>

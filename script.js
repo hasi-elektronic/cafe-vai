@@ -40,7 +40,7 @@
   const spot = $('#spot'), spotbg = $('#spotbg');
   const story = $('.story'), steps = $$('.step'), screens = $$('.screen'), phone = $('#phone');
   const parimg = $('#parimg');
-  const nav = $('#nav'), bar = $('#bar');
+  const nav = $('#nav'), bar = $('#bar'), dock = $('#dock');
 
   let heroTop, heroH, menuTop, menuH, storyTop, storyH, trackW, panelPos = [];
 
@@ -164,6 +164,7 @@
     renderFill(); renderParallax();
     bar.style.transform = `scaleX(${clamp(target / docMax())})`;
     nav.classList.toggle('solid', target > 40);
+    if (dock) dock.classList.toggle('show', target > 260);
     const down = target > lastY + 2, up = target < lastY - 2;
     if (down && target > 500 && !navHidden && !$('#sheet').classList.contains('open')) { nav.classList.add('hide'); navHidden = true; document.body.classList.add('nav-hidden'); }
     if (up && navHidden) { nav.classList.remove('hide'); navHidden = false; document.body.classList.remove('nav-hidden'); }

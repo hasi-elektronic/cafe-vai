@@ -3,30 +3,106 @@
 import sys, pathlib
 out = pathlib.Path(sys.argv[1])
 
-import json
-P = json.load(open(pathlib.Path(__file__).parent / "parts.json"))
-KARTE = f'''<section class="kmenu" id="speisekarte">
-  <div class="kh">
-    <div>
-      <span class="eyebrow">Speisekarte</span>
-      <h2>Von früh<br>bis <em>spät.</em></h2>
-      {P["allergen"].replace('class="i "','class="i allergen"').replace("<span","<p",1).replace("</span>","</p>")}
-      {P["bf"]}
-    </div>
-    <div class="lang" role="group" aria-label="Sprache"><button data-l="de" class="on">DE</button><button data-l="en">EN</button><button data-l="tr">TR</button></div>
+def items(rows):
+    h = ""
+    for r in rows:
+        name, desc, price = r[0], r[1], r[2]
+        tag = f"<small>{r[3]}</small>" if len(r) > 3 else ""
+        d = f"<span>{desc}</span>" if desc else ""
+        h += f"<li><strong>{name}{tag}</strong>{d}<em>{price}</em></li>\n"
+    return f'<ul class="items">\n{h}</ul>'
+
+panels = []
+
+panels.append(f'''
+<article class="panel" data-label="Frühstück">
+  <div class="pimg"><img src="assets/fruehstueck.webp" alt="VAI Serpme Kahvaltı – türkisches Frühstück für zwei" loading="lazy" width="620" height="827"><span class="tag">Sa &amp; So · 9–12:30 Uhr</span></div>
+  <div class="ptxt">
+    <div class="pnum">01</div>
+    <h3>Frühstück</h3>
+    <p class="sub">Nur vor Ort · samstags und sonntags</p>
+    {items([
+      ("Schnelles Frühstück","mit Heißgetränk","13,90 €"),
+      ("VAI Serpme Kahvaltı","türkisches Frühstück · für 2 Personen","38,90 €","Signature"),
+      ("Jede weitere Person","","16,90 €"),
+      ("Kinder 7–12 Jahre","","8,90 €"),
+    ])}
+    <p class="extras"><b>Extras:</b> Menemen 5,00 · Sucuk mit Ei 5,50 · Menemen &amp; Sucuk 6,00 · Aufstrich/Oliven 3,00 · Kännchen Tee 6,50</p>
   </div>
-  <div class="filter" id="filter">
-    <label class="srch"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <input id="q" type="search" autocomplete="off" placeholder="{P["search_ph"][0]}" data-ph-en="{P["search_ph"][1]}" data-ph-tr="{P["search_ph"][2]}"></label>
-    <nav class="tabs" id="tabs" aria-label="Kategorien">{P["tabs"]}</nav>
+</article>''')
+
+panels.append(f'''
+<article class="panel" data-label="SmashBurger">
+  <div class="pimg"><img src="assets/burger.webp" alt="Dobi's SmashBurger mit Spiegelei und Jalapeños" loading="lazy" width="620" height="827"><span class="tag">Menü = Pommes + 0,33 l</span></div>
+  <div class="ptxt">
+    <div class="pnum">02</div>
+    <h3>SmashBurger</h3>
+    <p class="sub">Menü mit Pommes &amp; Softdrink · einzeln</p>
+    {items([
+      ("Dobi's SmashBurger","140 g Rind, Spiegelei, Pastırma, Jalapeños, Haussauce","19,90 € · 11,90 €","Bestseller"),
+      ("Chicken Hot Honey","","18,90 € · 10,90 €"),
+      ("Cheeseburger","","17,50 € · 9,50 €"),
+      ("Chickenburger","","17,50 € · 9,50 €"),
+      ("Hamburger","","16,50 € · 8,50 €"),
+      ("Veggieburger","","16,50 € · 7,50 €"),
+    ])}
+    <p class="extras"><b>Dazu:</b> Pommes 4,50 · Süßkartoffel-Pommes 5,50 · Spiegelei 1,00 · Käse 1,00 · Pastırma 1,50 · Jalapeños 0,50 · Extra Patty 3,00</p>
   </div>
-  <div class="fchips"><div class="chips" id="chips">{P["chips"]}</div><p class="kcount" id="kcnt" aria-live="polite"></p></div>
-  <div class="cats">
-{P["body"]}
-<p class="none" id="none" hidden>{P["none"]}</p>
+</article>''')
+
+panels.append(f'''
+<article class="panel" data-label="Tenders">
+  <div class="pimg"><div class="duo"><img src="assets/tenders-og.webp" alt="OG's Chicken Tenders mit fünf Dips" loading="lazy" width="721" height="540"><img src="assets/tenders-crunchy.webp" alt="Natural Crunchy Tenders" loading="lazy" width="721" height="540"></div><span class="tag">100 % Hähnchenfilet</span></div>
+  <div class="ptxt">
+    <div class="pnum">03</div>
+    <h3>Tenders</h3>
+    <p class="sub">OG's (zart, würzige Panade) oder Natural Crunchy (extra knusprig)</p>
+    {items([
+      ("4 Stück","Menü mit Pommes, Dip &amp; Softdrink 10,90 €","5,90 €"),
+      ("8 Stück","Menü 15,90 €","9,90 €"),
+      ("12 Stück","Menü 20,90 €","13,90 €"),
+    ])}
+    <p class="extras"><b>Dips:</b> Dobi's Sauce · Sweet &amp; Sour · Ketchup · Mayo · Hot Honey</p>
   </div>
-  <footer class="kfoot"><p>{P["foot"]}</p><div class="links"><button class="btn btn-ghost" id="printbtn" type="button">{P["printlbl"]}</button><a class="btn btn-ghost" href="karte" target="_blank" rel="noopener">QR-Seite öffnen ↗</a></div></footer>
-</section>'''
+</article>''')
+
+panels.append(f'''
+<article class="panel" data-label="Kaffee &amp; Tee">
+  <div class="pimg"><img src="assets/banner-drinks-stock.webp" alt="Cappuccino mit Latte Art" loading="lazy" width="1100" height="423" style="object-position:34% 50%"><span class="tag">Meet for coffee</span></div>
+  <div class="ptxt">
+    <div class="pnum">04</div>
+    <h3>Kaffee &amp; Tee</h3>
+    <p class="sub">Die Pause, für die man hergekommen ist</p>
+    {items([
+      ("Kaffee Crema","klein · groß","2,80 € · 4,80 €"),
+      ("Espresso","Doppio 3,80 € · Macchiato 2,40 €","2,00 €"),
+      ("Cappuccino","","3,80 €"),
+      ("Latte Macchiato","","4,20 €"),
+      ("Milchkaffee","","4,20 €"),
+      ("Türkischer Tee","Kännchen (bis 3 Personen) 8,50 €","1,50 €"),
+    ])}
+    <p class="extras"><b>Außerdem:</b> Kaffee Coco 4,50 · Heiße Schokolade 3,50 · Teesorten 2,50</p>
+  </div>
+</article>''')
+
+panels.append(f'''
+<article class="panel" data-label="Drinks &amp; Bar">
+  <div class="pimg"><img src="assets/kaffee.webp" alt="Barista an der Kaffeemaschine im Café VAI" loading="lazy" width="620" height="827"><span class="tag">Fr · Sa · Sa 17–22 Uhr</span></div>
+  <div class="ptxt">
+    <div class="pnum">05</div>
+    <h3>Drinks &amp; Bar</h3>
+    <p class="sub">Spritz, Longdrinks, Bier und Hausgemachtes</p>
+    {items([
+      ("Aperol · Lillet · Sarti","Spritz","7,50 €"),
+      ("Longdrinks","Gin &amp; Tonic, Jack &amp; Cola, Vodka Bull/Lemon, Campari Orange","7,50 €"),
+      ("Hausgemachte Limo / Eistee","0,5 l","4,90 €"),
+      ("Weizen","0,5 l","3,90 €"),
+      ("Cluss Kellerpils / Radler","0,33 l","3,60 €"),
+    ])}
+    <p class="extras"><b>Dazu:</b> Roseano 5,90 · Corona/Desperados 4,20 · Softdrinks 0,33 l 3,90 · Red Bull 4,00</p>
+  </div>
+</article>''')
+panels[-1] = panels[-1].replace("Fr · Sa · Sa 17–22 Uhr", "Fr · Sa · So")
 
 index = f'''<!DOCTYPE html>
 <html lang="de">
@@ -42,8 +118,7 @@ index = f'''<!DOCTYPE html>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/icon-180.png">
 <link rel="preload" href="assets/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="karte.css">
-<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="bar"></div>
@@ -57,11 +132,11 @@ index = f'''<!DOCTYPE html>
     <li><a href="#system">GastrOptima</a></li>
     <li><a href="#besuch">Besuch</a></li>
   </ul>
-  <a class="btn btn-amber" href="#besuch">Tisch reservieren</a>
+  <div class="navcta"><a class="btn btn-amber" href="karte">Karte &amp; Bestellen</a><a class="btn btn-ghost" href="#besuch">Tisch reservieren</a></div>
   <button class="burger" id="burger" aria-label="Menü"><i></i><i></i></button>
 </header>
 <nav class="sheet" id="sheet">
-  <a href="#ueber">Über uns</a><a href="#speisekarte">Speisekarte</a><a href="#bestellen">Bestellen</a><a href="#system">GastrOptima</a><a href="#besuch">Reservieren &amp; Zeiten</a>
+  <a href="#ueber">Über uns</a><a href="#speisekarte">Speisekarte</a><a href="#bestellen">Bestellen</a><a href="#system">GastrOptima</a><a href="karte">Karte &amp; Bestellen</a><a href="#besuch">Reservieren &amp; Zeiten</a>
 </nav>
 
 <!-- ============ HERO ============ -->
@@ -109,8 +184,23 @@ index = f'''<!DOCTYPE html>
   </div>
 </section>
 
-<!-- ============ SPEISEKARTE (digitale Karte, wie /karte) ============ -->
-{KARTE}
+<!-- ============ SPEISEKARTE (horizontal) ============ -->
+<section class="menu-sec" id="speisekarte" data-scene>
+  <div class="hmenu-stage">
+    <div class="hmenu-track" id="track">
+      <article class="panel lead">
+        <span class="eyebrow">Speisekarte</span>
+        <h2>Von früh<br>bis <em>spät.</em></h2>
+        <p>Scroll weiter — die Karte läuft seitwärts. Alle Preise von Café VAI, vor Ort Fr–So.</p>
+        <div class="arrow"><i></i> Weiter scrollen</div>
+        <a class="btn btn-amber" href="karte" style="margin-top:22px;align-self:flex-start">Direkt zur Karte &amp; bestellen →</a>
+      </article>
+      {''.join(panels)}
+      <div style="flex:0 0 8vw"></div>
+    </div>
+    <div class="hprog" id="hprog"></div>
+  </div>
+</section>
 
 <!-- ============ SPOTLIGHT ============ -->
 <section class="spot" id="spot">
@@ -138,6 +228,7 @@ index = f'''<!DOCTYPE html>
           <li class="step"><span class="n">04</span><div><h3>Küchen-Tablet schlägt Alarm</h3><p>Push-Benachrichtigung mit eigenem Ton, Bildschirm bleibt an. Nichts geht unter.</p></div></li>
         </ol>
         <div class="badges"><span class="badge"><b>0 %</b> Provision pro Bestellung</span><span class="badge">statt 13–30 % bei klassischen Lieferdiensten</span></div>
+        <p style="margin-top:22px"><a class="btn btn-amber" href="karte">Jetzt selbst ausprobieren: Karte &amp; Bestellen →</a></p>
       </div>
       <div class="phone-col" style="perspective:1400px">
         <div class="phone" id="phone"><div class="screen-wrap">
@@ -249,7 +340,7 @@ index = f'''<!DOCTYPE html>
     <div class="fgrid">
       <div><div class="fbrand"><img src="assets/logo-disc.png" alt="" width="56" height="56"><b>Café VAI</b></div><p>Kaffee · Frühstück · SmashBurger · Drinks<br>in Vaihingen an der Enz.</p></div>
       <div><h4>Kontakt</h4><ul><li>Stuttgarter Straße 36</li><li>71665 Vaihingen an der Enz</li><li><a href="tel:+4970421204640">+49 7042 1204640</a></li><li><a href="mailto:vayvay@cafevai.de">vayvay@cafevai.de</a></li></ul></div>
-      <div><h4>Folgen</h4><ul><li><a href="https://instagram.com/cafe_vai" target="_blank" rel="noopener">Instagram @cafe_vai</a></li><li><a href="#besuch">Reservieren</a></li><li><a href="#bestellen">Bestellen</a></li><li><a href="karte.html">Digitale Karte (QR)</a></li><li><a href="qr.html">Tischaufsteller</a></li></ul></div>
+      <div><h4>Folgen</h4><ul><li><a href="https://instagram.com/cafe_vai" target="_blank" rel="noopener">Instagram @cafe_vai</a></li><li><a href="#besuch">Reservieren</a></li><li><a href="#bestellen">Bestellen</a></li><li><a href="karte">Karte &amp; Bestellen</a></li><li><a href="qr.html">Tischaufsteller</a></li></ul></div>
       <div><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li></ul></div>
     </div>
     <div class="legal"><span>Demo-Entwurf · nicht die offizielle Website von Café VAI</span><span>Gebaut von <a href="https://www.hasi-elektronic.de" target="_blank" rel="noopener">Hasi Elektronic</a> mit <a href="https://gastroptima.de" target="_blank" rel="noopener">GastrOptima</a></span></div>
@@ -257,12 +348,8 @@ index = f'''<!DOCTYPE html>
 </footer>
 
 <div class="rosette">Demo · GastrOptima</div>
-<div class="sticky-cta"><a href="#besuch">Reservieren</a><a href="tel:+4970421204640">Anrufen</a></div>
-{P["shared"]}
-{P["toastg"]}
-{P["data"]}
+<div class="dock" id="dock"><a class="d-karte" href="karte">Karte &amp; Bestellen</a><a class="d-res" href="#besuch">Reservieren</a><a class="d-tel" href="tel:+4970421204640" aria-label="Anrufen">☎</a></div>
 <script src="script.js" defer></script>
-<script src="karte.js" defer></script>
 </body>
 </html>
 '''
