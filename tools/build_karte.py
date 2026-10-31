@@ -179,6 +179,8 @@ for ci, cat in enumerate(CATS):
             gt = f'<h3 class="gt"><span class="i" data-en="{esc(g["t"]["en"])}" data-tr="{esc(g["t"]["tr"])}">{esc(g["t"]["de"])}</span></h3>'
         ghtml += f'<div class="grp">{gt}<ul class="list">\n{lis}</ul></div>\n'
     hero = ""
+    if not cat["img"]:
+        hero = f'<div class="catimg ty"><span class="i" data-en="{esc(cat["t"]["en"])}" data-tr="{esc(cat["t"]["tr"])}">{esc(cat["t"]["de"])}</span></div>'
     if cat["img"]:
         f, pos = cat["img"]
         hero = f'<div class="catimg"><img src="assets/{f}" alt="" loading="lazy" style="object-position:{pos}"></div>'
@@ -237,12 +239,13 @@ page = f'''<!DOCTYPE html>
 
 <main>
 <section class="hero-k">
-  <img src="assets/og-burger.jpg" alt="" width="1200" height="630" fetchpriority="high">
+  <div class="hs" aria-hidden="true"><img class="on" src="assets/og-burger.jpg" alt="" width="1200" height="630" fetchpriority="high"><img src="assets/banner-fruehstueck-echt.webp" alt="" width="1100" height="578" loading="lazy"><img src="assets/tenders-og.webp" alt="" width="721" height="540" loading="lazy"><img src="assets/banner-drinks-stock.webp" alt="" width="1100" height="423" loading="lazy" style="object-position:46% 50%"></div>
   <div class="inner">
     <span class="eyebrow">{U("sub")}</span>
     <h1>{U("title")}</h1>
     <p class="allergen">{U("allergen")}</p>
     <p class="bf" id="bfchip"><i></i><span id="bftxt"></span></p>
+    <span class="cue" aria-hidden="true"><i></i></span>
   </div>
 </section>
 

@@ -42,6 +42,21 @@
   const parimg = $('#parimg');
   const nav = $('#nav'), bar = $('#bar'), dock = $('#dock');
 
+  const capsEl = $('#caps'), stageEl = $('.hero-stage');
+  let FR = { W: 0, H: 0 };
+  function layoutFrame() {
+    if (mobile()) {
+      [frame, capsEl].forEach(el => el.removeAttribute('style'));
+      [count, ticks].forEach(el => { el.style.left = ''; el.style.right = ''; el.style.top = ''; });
+      stageEl.classList.remove('fit'); FR = { W: vw, H: vh }; return;
+    }
+    const W = Math.min(vw * 0.94, 1360), H = Math.min(vh * 0.84, 820);
+    const L = (vw - W) / 2, T = Math.min(vh - H - 14, (vh - H) / 2 + 22);
+    FR = { W, H };
+    [frame, capsEl].forEach(el => { el.style.inset = 'auto'; el.style.left = L + 'px'; el.style.top = T + 'px'; el.style.width = W + 'px'; el.style.height = H + 'px'; });
+    count.style.left = (L + 48) + 'px'; count.style.top = (T + 34) + 'px'; ticks.style.right = (vw - L - W + 22) + 'px';
+    stageEl.classList.add('fit');
+  }
   let heroTop, heroH, menuTop, menuH, storyTop, storyH, trackW, panelPos = [];
 
   // progress buttons
@@ -55,13 +70,14 @@
 
   function measure() {
     vw = innerWidth; vh = innerHeight;
+    layoutFrame();
     const y = scrollY;
     if (hero) { const r = hero.getBoundingClientRect(); heroTop = r.top + y; heroH = hero.offsetHeight; }
     if (story) { const r = story.getBoundingClientRect(); storyTop = r.top + y; storyH = story.offsetHeight; }
     if (menu && !rm) {
       const last = track.lastElementChild;
       trackW = last.offsetLeft + last.offsetWidth;
-      menu.style.height = (trackW - vw + vh) + 'px';
+      menu.style.height = ((trackW - vw) / 1.7 + vh) + 'px';
       const r = menu.getBoundingClientRect(); menuTop = r.top + y; menuH = menu.offsetHeight;
       panelPos = panels.map(p => ({ l: p.offsetLeft, w: p.offsetWidth }));
     }
@@ -81,14 +97,20 @@
     const sT = m ? 20 : 17, eT = m ? 12 : 4;
     const sB = m ? 40 : 17, eB = m ? 40 : 4;
     const sL = m ? 16 : 34, eL = m ? 4 : 3;
-    frame.style.clipPath = `inset(${lerp(sT, eT, e)}vh ${lerp(sL, eL, e)}vw ${lerp(sB, eB, e)}vh round ${lerp(36, 22, e)}px)`;
+    if (m) {
+      frame.style.clipPath = `inset(${lerp(sT, eT, e)}vh ${lerp(sL, eL, e)}vw ${lerp(sB, eB, e)}vh round ${lerp(36, 22, e)}px)`;
+    } else {
+      const cw = Math.min(vw * 0.3, 480), ch = Math.min(vh * 0.62, 600);
+      const ix = (FR.W - cw) / 2, iy = (FR.H - ch) / 2;
+      frame.style.clipPath = `inset(${lerp(iy, 0, e)}px ${lerp(ix, 0, e)}px ${lerp(iy, 0, e)}px ${lerp(ix, 0, e)}px round ${lerp(36, 22, e)}px)`;
+    }
     bgtext.style.opacity = 1 - e * 0.85;
     bgtext.style.transform = `scale(${1 + e * 0.18})`;
     intro.style.opacity = 1 - clamp(p / 0.03);
     intro.style.transform = `translateY(${-p * 300}px)`;
     hint.style.opacity = 1 - clamp(p / 0.025);
     const capOn = ease(clamp((p - 0.035) / 0.04));
-    const s = clamp((p - 0.07) / 0.93) * 4;
+    const s = clamp((p - 0.03) / 0.97) * 4;
     slides.forEach((sl, i) => {
       const c = i + 0.5;
       let d = Math.abs(s - c);
@@ -157,7 +179,7 @@
 
   function frameRender() {
     const target = scrollY;
-    sy = Math.abs(target - sy) < 0.2 ? target : lerp(sy, target, 0.14);
+    sy = Math.abs(target - sy) < 0.2 ? target : lerp(sy, target, 0.2);
     if (hero) renderHero(sy);
     if (menu && !rm) renderMenu(sy);
     if (story) renderStory(sy);

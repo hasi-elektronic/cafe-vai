@@ -230,6 +230,26 @@
   $('#printbtn').addEventListener('click', () => window.print());
   $$('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.l)));
 
+  /* ---------- Cover-Parallax, Slideshow, Lichtkegel ---------- */
+  const covers = $$('.catimg:not(.ty) img'); const hs = $$('.hs img'); let hi = 0;
+  if (hs.length > 1 && !rm) setInterval(() => { hs[hi].classList.remove('on'); hi = (hi + 1) % hs.length; hs[hi].classList.add('on'); }, 4800);
+  let ptick = false;
+  function parallax() {
+    ptick = false;
+    covers.forEach(im => {
+      const r = im.parentElement.getBoundingClientRect();
+      if (r.bottom < -50 || r.top > innerHeight + 50) return;
+      im.style.transform = `translate3d(0,${(r.top + r.height / 2 - innerHeight / 2) * -0.12}px,0)`;
+    });
+    if (hs.length && scrollY < innerHeight) $('.hs').style.transform = `translate3d(0,${scrollY * 0.25}px,0)`;
+  }
+  if (!rm) addEventListener('scroll', () => { if (!ptick) { ptick = true; requestAnimationFrame(parallax); } }, { passive: true });
+  document.addEventListener('pointermove', e => {
+    const li = e.target.closest && e.target.closest('.it'); if (!li) return;
+    const r = li.getBoundingClientRect(); li.style.setProperty('--mx', (e.clientX - r.left) + 'px'); li.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }, { passive: true });
+  parallax();
+
   /* ---------- Start ---------- */
   setLang(lang);
   spy();

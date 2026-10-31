@@ -51,7 +51,7 @@ h2 em,.hero-word em{font-style:italic;color:var(--amber);font-weight:400}
 .sheet a{font-family:var(--serif);font-size:2.4rem;padding:8px 0;border-bottom:1px solid var(--line)}
 
 /* ============ HERO (pinned) ============ */
-.hero{position:relative;height:450vh}
+.hero{position:relative;height:220vh}
 .hero-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
 .hero-bgtext{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-weight:300;font-size:clamp(14rem,44vw,42rem);line-height:.8;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px rgba(243,234,217,.16);user-select:none;will-change:transform,opacity}
 .hero-frame{position:absolute;inset:0;overflow:hidden;will-change:clip-path;background:#000}
@@ -138,7 +138,7 @@ h2 em,.hero-word em{font-style:italic;color:var(--amber);font-weight:400}
 .price-big span{color:var(--muted);font-family:var(--sans);font-size:.88rem}
 
 /* ============ ORDER STORY (pinned phone) ============ */
-.story{position:relative;height:520vh;background:var(--bg)}
+.story{position:relative;height:250vh;background:var(--bg)}
 .story-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center}
 .story-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(30px,7vw,120px);align-items:center;width:100%}
 .story h2{margin:14px 0 clamp(18px,4vh,40px)}
@@ -386,3 +386,10 @@ footer li{list-style:none;padding:3px 0}
   .dock a,.dock .d-karte,.dock .d-res,.dock .d-wa{flex:0 0 auto;flex-direction:row;gap:9px;padding:.8em 1.3em;border-radius:99px;font-size:.84rem;width:auto}
 }
 @media (min-width:761px){.dock a,.dock .d-karte,.dock .d-res,.dock .d-wa{flex:0 0 172px;width:172px;justify-content:center;padding:.8em .6em}}
+
+/* ---- Desktop: Bildfenster mit fester Größe statt Vollbild (kein Überzoomen) ---- */
+.hero-stage.fit .cap{left:48px;right:48px;bottom:46px}
+.hero-stage.fit .hero-word{font-size:clamp(3.4rem,8.5vw,8rem)}
+.hero-stage.fit .slide img{transform:none}
+.spot-bg{left:0;right:0;margin:0 auto;width:min(100%,1500px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+@media (min-width:1700px){.panel{width:min(62vw,1100px)}}
