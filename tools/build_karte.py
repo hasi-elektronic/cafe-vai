@@ -26,6 +26,7 @@ UI = {
  "inlist": ("In Ihrer Auswahl", "In your list", "Listende"), "toview": ("Ansehen", "View list", "Listeyi gör"),
  "aibd": ("Beispielbild", "Sample image", "Örnek görsel"),
  "ainote": ("Digital erstellt — beispielhafte Anrichtung, das Gericht kann abweichen.", "Digitally created — sample presentation, the dish may differ.", "Dijital olarak oluşturuldu — örnek sunum, yemek farklı olabilir."),
+ "phint": ("Tippen Sie auf den Preis, um ein Gericht zur Auswahl hinzuzufügen.", "Tap the price to add an item to your list.", "Bir yemeği listeye eklemek için fiyata dokunun."),
  "close": ("Schließen", "Close", "Kapat"), "sort": ("Sorte", "Variety", "Çeşit"),
  "mylist": ("Meine Auswahl", "My list", "Listem"), "pos": ("Positionen", "items", "ürün"),
  "view": ("Ansehen", "View", "Gör"), "table": ("Tisch-Nr.", "Table no.", "Masa no."),
@@ -143,13 +144,13 @@ for _c in CATS:
                 _it["imgs"] = [(f"ai-{AIMG[_it['id']]}.webp", "50% 58%", "ai")]
 
 def eur(c): return f"{c//100},{c%100:02d} €"
+def pill(k, c):
+    lab = f'<small>{U(k)}</small>' if k else ''
+    return f'<button type="button" class="vp" data-v="{k or ""}">{lab}<b>{eur(c)}</b><span class="pl">+</span></button>'
 def price_html(it):
     if it["vars"]:
-        pills = "".join(
-            f'<button type="button" class="vp{" on" if i == 0 else ""}" data-v="{k}" aria-pressed="{"true" if i == 0 else "false"}"><small>{U(k)}</small><b>{eur(c)}</b></button>'
-            for i, (k, c) in enumerate(it["vars"]))
-        return f'<span class="pv vsel">{pills}</span>'
-    return f'<span class="pv"><span class="pp"><b>{eur(it["c"])}</b></span></span>'
+        return '<span class="pv vsel">' + "".join(pill(k, c) for k, c in it["vars"]) + '</span>'
+    return f'<span class="pv vsel">{pill("", it["c"])}</span>'
 def minc(it): return min(c for _, c in it["vars"]) if it["vars"] else it["c"]
 def tag(it, k): return k in it["badges"]
 
@@ -185,7 +186,7 @@ for ci, cat in enumerate(CATS):
                     f'<button class="open" type="button" data-open="{it["id"]}" aria-label="{esc(n["de"])}">{thumb}'
                     f'<span class="tx"><span class="l1">{name}{badges}</span>{desc}</span></button>'
                     f'{price_html(it)}'
-                    f'<button class="add" type="button" data-add="{it["id"]}" aria-label="+"><span>+</span></button></li>\n')
+                    f'</li>\n')
             DATA.setdefault("items", {})[it["id"]] = dict(id=it["id"], name=n, desc=it["desc"], vars=it["vars"], c=it["c"], opts=it["opts"], imgs=it["imgs"], badges=it["badges"], cat=cat["id"])
         gt = ""
         if g["t"]:
@@ -271,6 +272,7 @@ page = f'''<!DOCTYPE html>
 </div>
 
 <div class="cats">
+<p class="phint"><i>+</i> {U("phint")}</p>
 {chr(10).join(body)}
 <p class="none" id="none" hidden>{U("none")}</p>
 </div>

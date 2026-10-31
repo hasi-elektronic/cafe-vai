@@ -316,3 +316,32 @@ body.nav-hidden #speisekarte .filter{top:0}
   .it.big .pv.vsel{padding-left:16px}
 }
 @media (max-width:560px){.it:not(.big) .th{min-height:96px}}
+
+/* ---- Auswahl direkt über den Preis ---- */
+.add{display:none!important}
+.vp{min-height:44px;padding:.35rem .5rem .35rem .8rem;border-color:rgba(227,168,63,.45);background:rgba(227,168,63,.07);gap:8px;align-items:center;transition:transform .2s var(--ease),background .2s,border-color .2s}
+.vp b{color:var(--amber)}
+.vp small{color:#cfc8b6}
+.vp .pl{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:99px;background:var(--amber);color:#14110a;font-size:.95rem;font-weight:800;line-height:1}
+.vp:hover{border-color:var(--amber);background:rgba(227,168,63,.14)}
+.vp:active{transform:scale(.96)}
+.vp.in{background:rgba(63,208,138,.12);border-color:rgba(63,208,138,.7)}
+.vp.in .pl{background:#3fd08a;color:#052e16;font-size:.8rem}
+.vp.bump{animation:popin .4s var(--ease)}
+.vp.on{background:rgba(227,168,63,.07);border-color:rgba(227,168,63,.45)}.vp.on small{color:#cfc8b6;opacity:1}.vp.on b{color:var(--amber)}.vp.on::before{display:none}
+.pv.vsel{padding:10px 10px 10px 4px}
+.it.big{grid-template-columns:1fr auto}
+.it.big .pv.vsel{grid-column:1/-1;padding:0 16px 16px;flex-direction:row;flex-wrap:wrap}
+.phint{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;margin:14px 0 -10px}
+.phint i{font-style:normal;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--amber);color:#14110a;font-weight:800;font-size:.85rem}
+@media (min-width:900px){.it.big .pv.vsel{grid-column:2;grid-row:1/3;align-self:center;padding:16px;flex-direction:column;align-items:flex-start}}
+@media print{.phint{display:none}.vp .pl{display:none}.vp{border:0;background:none!important;min-height:0;padding:0 0 0 6px}}
+.it{position:relative}
+@media (max-width:560px){
+  .it{flex-wrap:wrap}
+  .it .open{flex:1 1 0;min-width:0}
+  .it:not(:has(.vp:nth-child(2))) .pv.vsel{flex:0 0 auto;order:0;position:static;transform:none;padding:10px 10px 10px 0;align-self:center}
+  .it:has(.vp:nth-child(2)) .open{flex:1 1 100%}
+  .it:has(.vp:nth-child(2)) .pv.vsel{order:3;flex:1 1 100%;flex-direction:row;padding:0 12px 12px}
+  .it:has(.vp:nth-child(2)) .pv.vsel .vp{flex:1 1 0;justify-content:space-between}
+}

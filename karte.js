@@ -116,7 +116,11 @@
     ['cshow', 'csend'].forEach(i => $('#' + i).disabled = n === 0);
     $('#cartbar').dataset.sum = sum;
     const per = {}; cart.forEach(e => { per[e.id] = (per[e.id] || 0) + e.n; });
-    lis.forEach(li => { const q = per[li.dataset.id] || 0; li.classList.toggle('sel', q > 0); const a = li.querySelector('.add'); if (a) a.dataset.n = q || ''; });
+    const pv = {}; cart.forEach(e => { const kk = e.id + '|' + (e.v || ''); pv[kk] = (pv[kk] || 0) + e.n; });
+    lis.forEach(li => {
+      const q = per[li.dataset.id] || 0; li.classList.toggle('sel', q > 0);
+      $$('.vp', li).forEach(p => { const n = pv[li.dataset.id + '|' + p.dataset.v] || 0; p.classList.toggle('in', n > 0); const pl = $('.pl', p); if (pl) pl.textContent = n > 1 ? n + '×' : (n ? '✓' : '+'); });
+    });
   }
   const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   $('#clist').addEventListener('click', e => {
@@ -183,13 +187,10 @@
   document.addEventListener('click', e => {
     const o = e.target.closest('[data-open]'); if (o) { const li = o.closest('.it'); const sp = li && li.querySelector('.vp.on'); showItem(o.dataset.open, true, sp ? sp.dataset.v : null); return; }
     const vp = e.target.closest('.vp');
-    if (vp) { $$('.vp', vp.parentElement).forEach(x => { const on = x === vp; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); return; }
-    const a = e.target.closest('[data-add]');
-    if (a) {
-      const it = ITEMS[a.dataset.add]; const li = a.closest('.it');
-      const sel = li && li.querySelector('.vp.on'); const v = sel ? sel.dataset.v : null;
-      if (it.opts) { showItem(a.dataset.add, false, v); return; }
-      add(a.dataset.add, v); a.classList.add('ok'); setTimeout(() => a.classList.remove('ok'), 500);
+    if (vp) {
+      const li = vp.closest('.it'); const id = li.dataset.id; const it = ITEMS[id]; const v = vp.dataset.v || null;
+      if (it.opts) { showItem(id, false, v); return; }
+      add(id, v); vp.classList.remove('bump'); void vp.offsetWidth; vp.classList.add('bump');
     }
   });
   $('#cartopen').addEventListener('click', () => { renderCart(); openD($('#cdlg')); });
