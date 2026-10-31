@@ -144,14 +144,14 @@ index = f'''<!DOCTYPE html>
   <div class="hero-stage">
     <div class="hero-bgtext" id="bgtext" aria-hidden="true">VAI</div>
     <div class="hero-frame" id="frame">
-      <div class="slide"><picture><source media="(max-width:760px)" srcset="assets/fruehstueck.webp"><img src="assets/banner-fruehstueck-echt.webp" alt="Serpme-Frühstück im Café VAI" width="1100" height="578" fetchpriority="high"></picture></div>
       <div class="slide"><picture><source media="(max-width:760px)" srcset="assets/burger.webp"><img src="assets/og-burger.jpg" alt="Dobi's SmashBurger" width="1200" height="630"></picture></div>
+      <div class="slide"><picture><source media="(max-width:760px)" srcset="assets/fruehstueck.webp"><img src="assets/banner-fruehstueck-echt.webp" alt="Serpme-Frühstück im Café VAI" width="1100" height="578" fetchpriority="high"></picture></div>
       <div class="slide"><img src="assets/tenders-og.webp" alt="Crispy Tenders mit Dips" width="721" height="540" style="object-position:50% 55%"></div>
       <div class="slide"><img src="assets/banner-drinks-stock.webp" alt="Cappuccino mit Latte Art" width="1100" height="423" style="object-position:45% 50%"></div>
     </div>
     <div class="hero-caps" id="caps">
-      <div class="cap"><span class="eyebrow">Sa &amp; So · ab 9 Uhr</span><div class="hero-word">Früh<em>stück</em></div><p>Das VAI Serpme Kahvaltı: türkisches Frühstück, das den ganzen Tisch füllt.</p><span class="chip">für zwei Personen <b>38,90 €</b></span></div>
       <div class="cap"><span class="eyebrow">Fr · Sa · So</span><div class="hero-word">Smash<em>Burger</em></div><p>140 g Rind, Spiegelei, Pastırma, Jalapeños — Dobi's Signature.</p><span class="chip">ab <b>11,90 €</b> · Menü <b>19,90 €</b></span></div>
+      <div class="cap"><span class="eyebrow">Sa &amp; So · ab 9 Uhr</span><div class="hero-word">Früh<em>stück</em></div><p>Das VAI Serpme Kahvaltı: türkisches Frühstück, das den ganzen Tisch füllt.</p><span class="chip">für zwei Personen <b>38,90 €</b></span></div>
       <div class="cap"><span class="eyebrow">100 % Hähnchenfilet</span><div class="hero-word">Crispy <em>Tenders</em></div><p>OG's oder Natural Crunchy, mit fünf Dips zum Teilen.</p><span class="chip">4 Stück <b>5,90 €</b></span></div>
       <div class="cap"><span class="eyebrow">Meet for coffee</span><div class="hero-word">Kaffee <em>&amp; Drinks</em></div><p>Vom Espresso bis zum Aperol Spritz — bleib auf einen zweiten.</p><span class="chip">Crema ab <b>2,80 €</b> · Spritz <b>7,50 €</b></span></div>
     </div>

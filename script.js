@@ -77,18 +77,18 @@
   function renderHero(sy) {
     const p = clamp((sy - heroTop) / (heroH - vh));
     const m = mobile();
-    const e = ease(clamp(p / 0.2));
+    const e = ease(clamp(p / 0.07));
     const sT = m ? 20 : 17, eT = m ? 12 : 4;
     const sB = m ? 40 : 17, eB = m ? 40 : 4;
     const sL = m ? 16 : 34, eL = m ? 4 : 3;
     frame.style.clipPath = `inset(${lerp(sT, eT, e)}vh ${lerp(sL, eL, e)}vw ${lerp(sB, eB, e)}vh round ${lerp(36, 22, e)}px)`;
     bgtext.style.opacity = 1 - e * 0.85;
     bgtext.style.transform = `scale(${1 + e * 0.18})`;
-    intro.style.opacity = 1 - clamp(p / 0.07);
+    intro.style.opacity = 1 - clamp(p / 0.03);
     intro.style.transform = `translateY(${-p * 300}px)`;
-    hint.style.opacity = 1 - clamp(p / 0.05);
-    const capOn = ease(clamp((p - 0.13) / 0.07));
-    const s = clamp((p - 0.2) / 0.8) * 4;
+    hint.style.opacity = 1 - clamp(p / 0.025);
+    const capOn = ease(clamp((p - 0.035) / 0.04));
+    const s = clamp((p - 0.07) / 0.93) * 4;
     slides.forEach((sl, i) => {
       const c = i + 0.5;
       let d = Math.abs(s - c);
