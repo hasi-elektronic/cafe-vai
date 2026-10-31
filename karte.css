@@ -345,3 +345,16 @@ body.nav-hidden #speisekarte .filter{top:0}
   .it:has(.vp:nth-child(2)) .pv.vsel{order:3;flex:1 1 100%;flex-direction:row;padding:0 12px 12px}
   .it:has(.vp:nth-child(2)) .pv.vsel .vp{flex:1 1 0;justify-content:space-between}
 }
+
+/* ---- Trinkgeld ---- */
+.tip{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.tip[hidden],.csub[hidden],.tcustom[hidden]{display:none}
+.tip .tl{display:block;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.tchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tchips button{min-height:44px;padding:.5rem 1rem;border-radius:99px;border:1px solid var(--line);font-size:.88rem;transition:all .2s}
+.tchips button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#14110a;font-weight:700}
+.tcustom{display:flex;align-items:center;gap:8px;margin-top:10px;color:var(--muted)}
+.tcustom input{width:110px;padding:.7rem;text-align:center;font:inherit;font-size:16px;background:var(--card);border:1px solid var(--line);color:var(--cream);border-radius:12px}
+.csub{display:flex;justify-content:space-between;align-items:baseline;color:var(--muted);font-size:.92rem;padding-top:10px}
+.csub b{font-weight:600;color:var(--cream);font-variant-numeric:tabular-nums}
+.slist li.tipli{font-size:1rem;color:var(--muted)}.slist li.tipli span:first-child{font-family:var(--sans);font-style:italic}

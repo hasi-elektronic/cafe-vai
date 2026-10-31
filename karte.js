@@ -89,6 +89,13 @@
 
   /* ---------- Warenkorb ---------- */
   const cart = new Map(); // key -> {id, v, o, n}
+  let tipMode = '0', tipCustom = 0;
+  const tipCents = sum => {
+    if (!sum || tipMode === '0') return 0;
+    if (tipMode === '5' || tipMode === '10') return Math.round(sum * (+tipMode) / 100);
+    if (tipMode === 'up') { const up = Math.ceil(sum / 100) * 100; return (up === sum ? sum + 100 : up) - sum; }
+    return tipCustom;
+  };
   const key = (id, v, o) => [id, v || '', o ?? ''].join('|');
   const unit = (it, v) => it.vars ? it.vars.find(x => x[0] === v)[1] : it.c;
   function add(id, v, o) {
@@ -112,7 +119,12 @@
       li.innerHTML = `<span>${esc(nm(it))}<small>${esc(sub)}</small></span><span class="qty"><button type="button" data-m="${k}">−</button><b>${e.n}</b><button type="button" data-p="${k}">+</button></span><b>${eur(e.n * unit(it, e.v))}</b>`;
       ul.appendChild(li);
     });
-    $('#cempty').hidden = n > 0; $('#ctot').textContent = eur(sum);
+    $('#cempty').hidden = n > 0;
+    const tp = tipCents(sum);
+    $('#tipbox').hidden = n === 0;
+    $('#csubrow').hidden = !(n && tp > 0); $('#ctiprow').hidden = !(n && tp > 0);
+    $('#csub').textContent = eur(sum); $('#ctip').textContent = eur(tp);
+    $('#ctot').textContent = eur(sum + tp); cart._sum = sum; cart._tip = tp;
     ['cshow', 'csend'].forEach(i => $('#' + i).disabled = n === 0);
     $('#cartbar').dataset.sum = sum;
     const per = {}; cart.forEach(e => { per[e.id] = (per[e.id] || 0) + e.n; });
@@ -195,6 +207,19 @@
   });
   $('#cartopen').addEventListener('click', () => { renderCart(); openD($('#cdlg')); });
 
+  /* ---------- Trinkgeld ---------- */
+  $('#tchips').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    tipMode = b.dataset.t;
+    $$('#tchips button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    $('#tcustom').hidden = tipMode !== 'c';
+    if (tipMode === 'c') { $('#tamt').focus(); }
+    renderCart();
+  });
+  $('#tamt').addEventListener('input', e => {
+    const v = parseFloat(e.target.value.replace(',', '.')); tipCustom = isFinite(v) && v > 0 ? Math.min(Math.round(v * 100), 99900) : 0; renderCart();
+  });
+
   /* ---------- Bestellzettel ---------- */
   $('#cshow').addEventListener('click', () => {
     const tbl = $('#tbl').value.trim();
@@ -206,7 +231,13 @@
       const li = document.createElement('li');
       li.innerHTML = `<span>${e.n}× ${esc(nm(it))}${sub ? `<small>${esc(sub)}</small>` : ''}</span><span>${eur(c)}</span>`; ul.appendChild(li);
     });
-    $('#stot').textContent = eur(sum);
+    const tp = tipCents(sum);
+    if (tp > 0) {
+      const li = document.createElement('li'); li.className = 'tipli';
+      li.innerHTML = `<span>${esc(t('tip'))}</span><span>${eur(tp)}</span>`; ul.appendChild(li);
+    }
+    $('#stipnote').hidden = !(tp > 0);
+    $('#stot').textContent = eur(sum + tp);
     $('#stime').textContent = new Date().toLocaleTimeString(lang === 'de' ? 'de-DE' : lang === 'tr' ? 'tr-TR' : 'en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
     closeD($('#cdlg')); setTimeout(() => openD($('#sdlg')), 220);
   });
