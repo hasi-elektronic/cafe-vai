@@ -27,9 +27,6 @@ UI = {
  "aibd": ("Beispielbild", "Sample image", "Örnek görsel"),
  "ainote": ("Digital erstellt — beispielhafte Anrichtung, das Gericht kann abweichen.", "Digitally created — sample presentation, the dish may differ.", "Dijital olarak oluşturuldu — örnek sunum, yemek farklı olabilir."),
  "phint": ("Tippen Sie auf den Preis, um ein Gericht zur Auswahl hinzuzufügen.", "Tap the price to add an item to your list.", "Bir yemeği listeye eklemek için fiyata dokunun."),
- "tip": ("Trinkgeld (freiwillig)", "Tip (optional)", "Bahşiş (isteğe bağlı)"), "tip0": ("Kein", "None", "Yok"), "tipup": ("Aufrunden", "Round up", "Yuvarla"), "tipc": ("Betrag", "Amount", "Tutar"),
- "subtotal": ("Zwischensumme", "Subtotal", "Ara toplam"),
- "tipnote": ("Trinkgeld bitte am Tisch bezahlen — es wird nicht online abgebucht.", "Please pay the tip at the table — nothing is charged online.", "Bahşişi lütfen masada ödeyin — çevrimiçi tahsil edilmez."),
  "close": ("Schließen", "Close", "Kapat"), "sort": ("Sorte", "Variety", "Çeşit"),
  "mylist": ("Meine Auswahl", "My list", "Listem"), "pos": ("Positionen", "items", "ürün"),
  "view": ("Ansehen", "View", "Gör"), "table": ("Tisch-Nr.", "Table no.", "Masa no."),
@@ -223,17 +220,12 @@ shared = f'''<div class="cartbar" id="cartbar" hidden><button type="button" id="
 <dialog id="cdlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
   <div class="dbody"><h2>{U("mylist")}</h2><ul class="clist" id="clist"></ul><p class="cempty" id="cempty">{U("empty")}</p>
    <label class="tbl"><span>{U("table")}</span><input id="tbl" inputmode="numeric" maxlength="3" placeholder="–"></label>
-   <div class="tip" id="tipbox" hidden><span class="tl">{U("tip")}</span>
-    <div class="tchips" id="tchips"><button type="button" data-t="0" aria-pressed="true">{U("tip0")}</button><button type="button" data-t="5" aria-pressed="false">5 %</button><button type="button" data-t="10" aria-pressed="false">10 %</button><button type="button" data-t="up" aria-pressed="false">{U("tipup")}</button><button type="button" data-t="c" aria-pressed="false">{U("tipc")}</button></div>
-    <label class="tcustom" id="tcustom" hidden><input id="tamt" inputmode="decimal" maxlength="6" placeholder="0,00"><span>€</span></label></div>
-   <div class="csub" id="csubrow" hidden><span>{U("subtotal")}</span><b id="csub"></b></div>
-   <div class="csub" id="ctiprow" hidden><span>{U("tip")}</span><b id="ctip"></b></div>
    <div class="ctotal"><span>{U("total")}</span><b id="ctot">0,00 €</b></div>
    <div class="dact"><button class="btn btn-amber" type="button" id="cshow">{U("show")}</button><button class="btn btn-ghost" type="button" id="csend">{U("send")}</button></div>
    <p class="toast" id="ctoast"></p></div></div></dialog>
 
 <dialog id="sdlg" class="slip"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
-  <div class="dbody"><div class="stbl" id="stbl"></div><ul class="slist" id="slist"></ul><div class="ctotal big"><span>{U("total")}</span><b id="stot"></b></div><p class="snote">{U("slipnote")}</p><p class="snote" id="stipnote" hidden>{U("tipnote")}</p><p class="stime" id="stime"></p></div></div></dialog>
+  <div class="dbody"><div class="stbl" id="stbl"></div><ul class="slist" id="slist"></ul><div class="ctotal big"><span>{U("total")}</span><b id="stot"></b></div><p class="snote">{U("slipnote")}</p><p class="stime" id="stime"></p></div></div></dialog>
 
 '''
 toastg = '<div class="toastg" id="toastg" role="status"></div>'
