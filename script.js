@@ -73,6 +73,7 @@
     vw = innerWidth; vh = innerHeight;
     layoutFrame();
     const y = scrollY;
+    if (hero && !rm) hero.style.height = (vh + Math.max(vh * 2, mobile() ? 1900 : 2700)) + 'px';
     if (hero) { const r = hero.getBoundingClientRect(); heroTop = r.top + y; heroH = hero.offsetHeight; }
     if (story) { const r = story.getBoundingClientRect(); storyTop = r.top + y; storyH = story.offsetHeight; }
     if (menu && !rm) {
