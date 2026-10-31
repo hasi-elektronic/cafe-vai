@@ -23,6 +23,7 @@ UI = {
  "small": ("Klein", "Small", "Küçük"), "large": ("Groß", "Large", "Büyük"),
  "add": ("Zur Auswahl", "Add to my list", "Listeme ekle"), "added": ("Hinzugefügt", "Added", "Eklendi"),
  "share": ("Teilen", "Share", "Paylaş"), "copied": ("Link kopiert", "Link copied", "Bağlantı kopyalandı"),
+ "inlist": ("In Ihrer Auswahl", "In your list", "Listende"), "toview": ("Ansehen", "View list", "Listeyi gör"),
  "close": ("Schließen", "Close", "Kapat"), "sort": ("Sorte", "Variety", "Çeşit"),
  "mylist": ("Meine Auswahl", "My list", "Listem"), "pos": ("Positionen", "items", "ürün"),
  "view": ("Ansehen", "View", "Gör"), "table": ("Tisch-Nr.", "Table no.", "Masa no."),
@@ -200,6 +201,7 @@ shared = f'''<div class="cartbar" id="cartbar" hidden><button type="button" id="
   <div class="dbody"><div class="dbd" id="dbd"></div><h2 id="dname"></h2><p class="dd" id="ddesc"></p>
    <div class="opts" id="dopts"></div><div class="vars" id="dvars"></div>
    <div class="dprice" id="dprice"></div><p class="allergen sm">{U("allergen")}</p>
+   <div class="dqty" id="dqty" hidden><button class="qb" type="button" id="dmin" aria-label="−">−</button><b id="dqn">1</b><button class="qb" type="button" id="dplus" aria-label="+">+</button><button class="dok" type="button" id="dview"><i>✓</i> {U("inlist")}</button></div>
    <div class="dact"><button class="btn btn-amber" type="button" id="dadd">{U("add")}</button><button class="btn btn-ghost" type="button" id="dshare">{U("share")}</button></div></div></div></dialog>
 
 <dialog id="cdlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>

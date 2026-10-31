@@ -115,6 +115,8 @@
     $('#cempty').hidden = n > 0; $('#ctot').textContent = eur(sum);
     ['cshow', 'csend'].forEach(i => $('#' + i).disabled = n === 0);
     $('#cartbar').dataset.sum = sum;
+    const per = {}; cart.forEach(e => { per[e.id] = (per[e.id] || 0) + e.n; });
+    lis.forEach(li => { const q = per[li.dataset.id] || 0; li.classList.toggle('sel', q > 0); const a = li.querySelector('.add'); if (a) a.dataset.n = q || ''; });
   }
   const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   $('#clist').addEventListener('click', e => {
@@ -159,10 +161,17 @@
     $('#dopts').innerHTML = it.opts ? it.opts.map((o, i) => `<button type="button" data-o="${i}" aria-pressed="${i === curO}">${esc(o)}</button>`).join('') : '';
     $('#dvars').innerHTML = it.vars ? it.vars.map(([k, c]) => `<button type="button" data-v="${k}" aria-pressed="${k === curV}">${t(k)}<small>${eur(c)}</small></button>`).join('') : '';
     $('#dprice').textContent = eur(unit(it, curV));
+    const e = cart.get(key(cur, curV, it.opts ? curO : null));
+    $('#dqty').hidden = !e; $('#dadd').hidden = !!e;
+    if (e) $('#dqn').textContent = e.n;
   }
   $('#dopts').addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (b) { curO = +b.dataset.o; drawItem(); } });
   $('#dvars').addEventListener('click', e => { const b = e.target.closest('[data-v]'); if (b) { curV = b.dataset.v; drawItem(); } });
-  $('#dadd').addEventListener('click', () => add(cur, curV, ITEMS[cur].opts ? curO : null));
+  const curKey = () => key(cur, curV, ITEMS[cur].opts ? curO : null);
+  $('#dadd').addEventListener('click', () => { add(cur, curV, ITEMS[cur].opts ? curO : null); drawItem(); const q = $('#dqty'); q.classList.remove('pop'); void q.offsetWidth; q.classList.add('pop'); });
+  $('#dplus').addEventListener('click', () => { const e = cart.get(curKey()); if (e) { e.n++; renderCart(); drawItem(); } });
+  $('#dmin').addEventListener('click', () => { const e = cart.get(curKey()); if (e) { e.n--; if (e.n <= 0) cart.delete(curKey()); renderCart(); drawItem(); } });
+  $('#dview').addEventListener('click', () => { closeD($('#dlg')); setTimeout(() => { renderCart(); openD($('#cdlg')); }, 230); });
   $('#dshare').addEventListener('click', async () => {
     const url = location.origin + location.pathname + '?g=' + cur;
     try { if (navigator.share) { await navigator.share({ title: nm(ITEMS[cur]) + ' — Café VAI', url }); return; } } catch (e) { return; }
