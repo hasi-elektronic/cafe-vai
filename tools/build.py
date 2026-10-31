@@ -143,7 +143,7 @@ index = f'''<!DOCTYPE html>
   <div class="hero-stage">
     <div class="hero-bgtext" id="bgtext" aria-hidden="true">VAI</div>
     <div class="hero-frame" id="frame">
-      <div class="slide"><picture><source media="(max-width:760px)" srcset="assets/burger.webp"><img src="assets/og-burger.jpg" alt="Dobi's SmashBurger" width="1200" height="630"></picture></div>
+      <div class="slide"><video id="vhero" muted playsinline autoplay preload="auto" poster="assets/og-burger.jpg" aria-label="Dobi's SmashBurger" width="1280" height="672"><source src="assets/burger-loop.mp4" type="video/mp4"></video></div>
       <div class="slide"><picture><source media="(max-width:760px)" srcset="assets/fruehstueck.webp"><img src="assets/banner-fruehstueck-echt.webp" alt="Serpme-Frühstück im Café VAI" width="1100" height="578" fetchpriority="high"></picture></div>
       <div class="slide"><img src="assets/tenders-og.webp" alt="Crispy Tenders mit Dips" width="721" height="540" style="object-position:50% 55%"></div>
       <div class="slide"><img src="assets/banner-drinks-stock.webp" alt="Cappuccino mit Latte Art" width="1100" height="423" style="object-position:45% 50%"></div>

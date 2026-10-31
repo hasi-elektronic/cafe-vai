@@ -300,3 +300,19 @@ body.nav-hidden #speisekarte .filter{top:0}
 .qty{width:112px;justify-content:space-between}
 .qty button{width:34px;height:34px}
 .qty b{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+
+/* Kennzeichnung digital erstellter Bilder */
+.aib{position:absolute;left:8px;bottom:8px;z-index:2;font-style:normal;font-family:var(--sans);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.28em .65em;border-radius:99px;background:rgba(0,0,0,.68);color:#e9dfc8;backdrop-filter:blur(6px);pointer-events:none}
+.dimg .aib{left:14px;bottom:44px;font-size:.62rem;z-index:3}
+.ainote{font-size:.76rem;color:var(--muted);margin:-4px 0 12px}
+
+/* Mobil: Preiswahl unter dem Text, damit nichts überlappt */
+@media (max-width:560px){
+  .it{flex-wrap:wrap}
+  .it .open{flex:1 1 calc(100% - 52px);min-width:0}
+  .it .add{flex:0 0 52px}
+  .pv.vsel{order:3;flex:1 1 100%;flex-direction:row;justify-content:flex-start;align-items:center;padding:0 12px 12px;gap:8px}
+  .pv.vsel .vp{flex:1 1 0;justify-content:center}
+  .it.big .pv.vsel{padding-left:16px}
+}
+@media (max-width:560px){.it:not(.big) .th{min-height:96px}}

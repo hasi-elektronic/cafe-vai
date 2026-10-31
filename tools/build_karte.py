@@ -24,6 +24,8 @@ UI = {
  "add": ("Zur Auswahl", "Add to my list", "Listeme ekle"), "added": ("Hinzugefügt", "Added", "Eklendi"),
  "share": ("Teilen", "Share", "Paylaş"), "copied": ("Link kopiert", "Link copied", "Bağlantı kopyalandı"),
  "inlist": ("In Ihrer Auswahl", "In your list", "Listende"), "toview": ("Ansehen", "View list", "Listeyi gör"),
+ "aibd": ("Beispielbild", "Sample image", "Örnek görsel"),
+ "ainote": ("Digital erstellt — beispielhafte Anrichtung, das Gericht kann abweichen.", "Digitally created — sample presentation, the dish may differ.", "Dijital olarak oluşturuldu — örnek sunum, yemek farklı olabilir."),
  "close": ("Schließen", "Close", "Kapat"), "sort": ("Sorte", "Variety", "Çeşit"),
  "mylist": ("Meine Auswahl", "My list", "Listem"), "pos": ("Positionen", "items", "ürün"),
  "view": ("Ansehen", "View", "Gör"), "table": ("Tisch-Nr.", "Table no.", "Masa no."),
@@ -38,9 +40,9 @@ UI = {
  "back": ("Zur Website", "Back to site", "Siteye dön"),
  "open_b": ("Frühstück läuft gerade", "Breakfast is being served", "Kahvaltı şu an servis ediliyor"),
  "open_a": ("Frühstück: Sa & So 9–12:30 Uhr", "Breakfast: Sat & Sun 9–12:30", "Kahvaltı: Cts & Paz 9–12:30"),
- "foot": ("Preise und Angebot nach cafevai.de (Oktober 2026), bitte vor Ort bestätigen. Fotos: Café VAI. Demo-Entwurf von Hasi Elektronic.",
-          "Prices and offer as on cafevai.de (October 2026), please confirm on site. Photos: Café VAI. Demo by Hasi Elektronic.",
-          "Fiyatlar ve menü cafevai.de'ye göredir (Ekim 2026), lütfen mekânda doğrulayın. Fotoğraflar: Café VAI. Hasi Elektronic demosu."),
+ "foot": ("Preise und Angebot nach cafevai.de (Oktober 2026), bitte vor Ort bestätigen. Fotos: Café VAI; als „Beispielbild“ gekennzeichnete Bilder sind digital erstellt. Demo-Entwurf von Hasi Elektronic.",
+          "Prices and offer as on cafevai.de (October 2026), please confirm on site. Photos: Café VAI; images labelled “Sample image” are digitally created. Demo by Hasi Elektronic.",
+          "Fiyatlar ve menü cafevai.de'ye göredir (Ekim 2026), lütfen mekânda doğrulayın. Fotoğraflar: Café VAI; “Örnek görsel” etiketli görseller dijital olarak oluşturulmuştur. Hasi Elektronic demosu."),
 }
 def U(k, cls="", tag="span"):
     de, en, tr = UI[k]
@@ -131,6 +133,15 @@ CATS = [
    I("red-bull","Red Bull",d=D("0,25 l","0.25 l","0,25 l"),c=400)])]),
 ]
 
+AIMG = {"chicken-hot-honey":"chicken-hot-honey","cheeseburger":"cheeseburger","chickenburger":"chickenburger","hamburger":"hamburger",
+        "veggieburger":"veggieburger","suesskartoffel":"suesskartoffel","menemen":"menemen","sucuk-ei":"sucuk-ei","aperol":"aperol",
+        "limonade":"limonade","latte-macchiato":"latte-macchiato","tuerkischer-tee":"tuerkischer-tee"}
+for _c in CATS:
+    for _g in _c["groups"]:
+        for _it in _g["items"]:
+            if _it["id"] in AIMG and not _it["imgs"]:
+                _it["imgs"] = [(f"ai-{AIMG[_it['id']]}.webp", "50% 58%", "ai")]
+
 def eur(c): return f"{c//100},{c%100:02d} €"
 def price_html(it):
     if it["vars"]:
@@ -166,8 +177,9 @@ for ci, cat in enumerate(CATS):
             badges = "".join(f'<em class="bd b-{k}">{U(k)}</em>' for k in it["badges"])
             thumb = ""
             if it["imgs"]:
-                f, pos = it["imgs"][0]
-                thumb = f'<span class="th"><img src="assets/{f}" alt="" loading="lazy" style="object-position:{pos}"></span>'
+                f, pos = it["imgs"][0][:2]
+                aib = f'<i class="aib">{U("aibd")}</i>' if len(it["imgs"][0]) > 2 else ""
+                thumb = f'<span class="th"><img src="assets/{f}" alt="" loading="lazy" style="object-position:{pos}">{aib}</span>'
             big = " big" if (it["imgs"] and not it["opts"] and it["badges"]) or it["id"] in ("tenders-8",) else ""
             lis += (f'<li class="it{big}" data-id="{it["id"]}" data-p="{minc(it)}" data-b="{" ".join(it["badges"])}">'
                     f'<button class="open" type="button" data-open="{it["id"]}" aria-label="{esc(n["de"])}">{thumb}'
@@ -198,7 +210,7 @@ shared = f'''<div class="cartbar" id="cartbar" hidden><button type="button" id="
 
 <dialog id="dlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
   <div class="dimg" id="dimg"></div>
-  <div class="dbody"><div class="dbd" id="dbd"></div><h2 id="dname"></h2><p class="dd" id="ddesc"></p>
+  <div class="dbody"><div class="dbd" id="dbd"></div><h2 id="dname"></h2><p class="dd" id="ddesc"></p><p class="ainote" id="dainote" hidden>{U("ainote")}</p>
    <div class="opts" id="dopts"></div><div class="vars" id="dvars"></div>
    <div class="dprice" id="dprice"></div><p class="allergen sm">{U("allergen")}</p>
    <div class="dqty" id="dqty" hidden><button class="qb" type="button" id="dmin" aria-label="−">−</button><b id="dqn">1</b><button class="qb" type="button" id="dplus" aria-label="+">+</button><button class="dok" type="button" id="dview"><i>✓</i> {U("inlist")}</button></div>

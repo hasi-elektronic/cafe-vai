@@ -154,7 +154,8 @@
   function drawItem() {
     const it = ITEMS[cur];
     const img = it.imgs ? it.imgs[Math.min(curO, it.imgs.length - 1)] : null;
-    $('#dimg').innerHTML = img ? `<img src="assets/${img[0]}" alt="" style="object-position:${img[1]}">` : '';
+    $('#dimg').innerHTML = img ? `<img src="assets/${img[0]}" alt="" style="object-position:${img[1]}">` + (img[2] === 'ai' ? `<span class="aib">${t('aibd')}</span>` : '') : '';
+    $('#dainote').hidden = !(img && img[2] === 'ai');
     $('#dname').textContent = nm(it);
     $('#ddesc').textContent = it.desc ? (it.desc[lang] || it.desc.de) : '';
     $('#dbd').innerHTML = it.badges.map(b => `<em class="bd b-${b}">${t(b)}</em>`).join('');

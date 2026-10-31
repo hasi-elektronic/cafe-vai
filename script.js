@@ -42,7 +42,8 @@
   const parimg = $('#parimg');
   const nav = $('#nav'), bar = $('#bar'), dock = $('#dock');
 
-  const capsEl = $('#caps'), stageEl = $('.hero-stage');
+  const capsEl = $('#caps'), stageEl = $('.hero-stage'), vhero = $('#vhero'); let vgone = false;
+  if (vhero && rm) { vhero.removeAttribute('autoplay'); vhero.pause(); }
   let FR = { W: 0, H: 0 };
   function layoutFrame() {
     if (mobile()) {
@@ -118,6 +119,7 @@
       if (i === 3 && s > c) d = 0;
       const o = clamp((0.62 - d) / 0.24);
       sl.style.opacity = o;
+      if (i === 0 && vhero) { if (o < 0.05) vgone = true; else if (o > 0.9 && vgone && vhero.ended) { vgone = false; vhero.currentTime = 0; vhero.play().catch(() => {}); } }
       sl.style.transform = `scale(${1.06 - 0.05 * clamp(s - i, 0, 1.2)})`;
       sl.style.zIndex = i === Math.min(3, Math.floor(s)) ? 2 : 1;
       const cp = caps[i];
