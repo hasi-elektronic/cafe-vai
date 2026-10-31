@@ -128,6 +128,7 @@ index = f'''<!DOCTYPE html>
   <ul>
     <li><a href="#ueber">Über uns</a></li>
     <li><a href="#speisekarte">Speisekarte</a></li>
+    <li><a href="karte.html">Karte (QR)</a></li>
     <li><a href="#bestellen">Bestellen</a></li>
     <li><a href="#system">GastrOptima</a></li>
     <li><a href="#besuch">Besuch</a></li>
@@ -193,6 +194,7 @@ index = f'''<!DOCTYPE html>
         <h2>Von früh<br>bis <em>spät.</em></h2>
         <p>Scroll weiter — die Karte läuft seitwärts. Alle Preise von Café VAI, vor Ort Fr–So.</p>
         <div class="arrow"><i></i> Weiter scrollen</div>
+        <a class="btn btn-ghost" href="karte.html" style="margin-top:22px;align-self:flex-start">Digitale Karte für QR-Code öffnen →</a>
       </article>
       {''.join(panels)}
       <div style="flex:0 0 8vw"></div>
@@ -338,7 +340,7 @@ index = f'''<!DOCTYPE html>
     <div class="fgrid">
       <div><div class="fbrand"><img src="assets/logo-disc.png" alt="" width="56" height="56"><b>Café VAI</b></div><p>Kaffee · Frühstück · SmashBurger · Drinks<br>in Vaihingen an der Enz.</p></div>
       <div><h4>Kontakt</h4><ul><li>Stuttgarter Straße 36</li><li>71665 Vaihingen an der Enz</li><li><a href="tel:+4970421204640">+49 7042 1204640</a></li><li><a href="mailto:vayvay@cafevai.de">vayvay@cafevai.de</a></li></ul></div>
-      <div><h4>Folgen</h4><ul><li><a href="https://instagram.com/cafe_vai" target="_blank" rel="noopener">Instagram @cafe_vai</a></li><li><a href="#besuch">Reservieren</a></li><li><a href="#bestellen">Bestellen</a></li></ul></div>
+      <div><h4>Folgen</h4><ul><li><a href="https://instagram.com/cafe_vai" target="_blank" rel="noopener">Instagram @cafe_vai</a></li><li><a href="#besuch">Reservieren</a></li><li><a href="#bestellen">Bestellen</a></li><li><a href="karte.html">Digitale Karte (QR)</a></li><li><a href="qr.html">Tischaufsteller</a></li></ul></div>
       <div><h4>Rechtliches</h4><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutz</a></li></ul></div>
     </div>
     <div class="legal"><span>Demo-Entwurf · nicht die offizielle Website von Café VAI</span><span>Gebaut von <a href="https://www.hasi-elektronic.de" target="_blank" rel="noopener">Hasi Elektronic</a> mit <a href="https://gastroptima.de" target="_blank" rel="noopener">GastrOptima</a></span></div>
