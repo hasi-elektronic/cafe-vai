@@ -1,4 +1,4 @@
-# Café VAI — Demo (GastrOptima)
+# Café VAI — Demo
 
 Scroll-gesteuerte Demo-Website für Café VAI, Vaihingen an der Enz. Statisch, kein Build-Schritt.
 **Demo-Entwurf**, `noindex`. Fotos/Logo stammen von cafevai.de (keine schriftliche Freigabe) — auf Wunsch sofort entfernen.

@@ -1,4 +1,4 @@
-/* Café VAI — Demo · GastrOptima */
+/* Café VAI — Demo */
 @font-face{font-family:"Fraunces";src:url(assets/fraunces-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Fraunces";src:url(assets/fraunces-latin-wght-italic.woff2) format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
 @font-face{font-family:"Inter";src:url(assets/inter-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -201,7 +201,7 @@ h2 em,.hero-word em{font-style:italic;color:var(--amber);font-weight:400}
 .k-card .t{color:var(--muted);font-size:.9em;margin-top:.5em;border-top:1px dashed var(--line);padding-top:.6em}
 .k-btn{margin-top:auto;border-radius:1em;background:var(--teal2);color:#04211c;text-align:center;font-weight:700;padding:.9em;font-size:.9em}
 
-/* ============ BAUSTEINE ============ */
+/* ============ KARTEN ============ */
 .bs{padding:clamp(90px,14vh,170px) 0;background:var(--bg2)}
 .bs-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:clamp(36px,6vh,70px)}
 .bs-head p{color:var(--muted);max-width:480px;justify-self:end}

@@ -37,9 +37,9 @@ UI = {
  "back": ("Zur Website", "Back to site", "Siteye dön"),
  "open_b": ("Frühstück läuft gerade", "Breakfast is being served", "Kahvaltı şu an servis ediliyor"),
  "open_a": ("Frühstück: Sa & So 9–12:30 Uhr", "Breakfast: Sat & Sun 9–12:30", "Kahvaltı: Cts & Paz 9–12:30"),
- "foot": ("Preise und Angebot nach cafevai.de (Oktober 2026), bitte vor Ort bestätigen. Fotos: Café VAI. Demo-Entwurf von Hasi Elektronic mit GastrOptima.",
-          "Prices and offer as on cafevai.de (October 2026), please confirm on site. Photos: Café VAI. Demo by Hasi Elektronic with GastrOptima.",
-          "Fiyatlar ve menü cafevai.de'ye göredir (Ekim 2026), lütfen mekânda doğrulayın. Fotoğraflar: Café VAI. Hasi Elektronic ve GastrOptima demosu."),
+ "foot": ("Preise und Angebot nach cafevai.de (Oktober 2026), bitte vor Ort bestätigen. Fotos: Café VAI. Demo-Entwurf von Hasi Elektronic.",
+          "Prices and offer as on cafevai.de (October 2026), please confirm on site. Photos: Café VAI. Demo by Hasi Elektronic.",
+          "Fiyatlar ve menü cafevai.de'ye göredir (Ekim 2026), lütfen mekânda doğrulayın. Fotoğraflar: Café VAI. Hasi Elektronic demosu."),
 }
 def U(k, cls="", tag="span"):
     de, en, tr = UI[k]
@@ -263,7 +263,7 @@ page = f'''<!DOCTYPE html>
 <nav class="tabs" id="tabs" aria-label="Kategorien">{"".join(tabs)}</nav>
 
 {shared}
-<div class="rosette">Demo · GastrOptima</div>
+<div class="rosette">Demo</div>
 {toastg}
 {data_script}
 <script src="karte.js" defer></script>
