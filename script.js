@@ -51,7 +51,7 @@
     b.addEventListener('click', () => scrollToPanel(i));
     hprog.appendChild(b);
   });
-  const pbtn = $$('button', hprog);
+  const pbtn = hprog ? $$('button', hprog) : [];
 
   function measure() {
     vw = innerWidth; vh = innerHeight;
@@ -165,8 +165,8 @@
     bar.style.transform = `scaleX(${clamp(target / docMax())})`;
     nav.classList.toggle('solid', target > 40);
     const down = target > lastY + 2, up = target < lastY - 2;
-    if (down && target > 500 && !navHidden && !$('#sheet').classList.contains('open')) { nav.classList.add('hide'); navHidden = true; }
-    if (up && navHidden) { nav.classList.remove('hide'); navHidden = false; }
+    if (down && target > 500 && !navHidden && !$('#sheet').classList.contains('open')) { nav.classList.add('hide'); navHidden = true; document.body.classList.add('nav-hidden'); }
+    if (up && navHidden) { nav.classList.remove('hide'); navHidden = false; document.body.classList.remove('nav-hidden'); }
     lastY = target;
     // active link
     let cur = '';
@@ -187,6 +187,7 @@
 
   /* ---------- anchors, burger ---------- */
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    if (a.closest('#tabs')) return;
     const id = a.getAttribute('href'); if (id.length < 2) return;
     const t = $(id); if (!t) return;
     e.preventDefault();
@@ -195,7 +196,7 @@
     if (id === '#top') y = 0;
     scrollTo({ top: y, behavior: rm ? 'auto' : 'smooth' });
   }));
-  $('#burger').addEventListener('click', () => { $('#sheet').classList.toggle('open'); $('#burger').classList.toggle('open'); nav.classList.remove('hide'); navHidden = false; });
+  $('#burger').addEventListener('click', () => { $('#sheet').classList.toggle('open'); $('#burger').classList.toggle('open'); nav.classList.remove('hide'); navHidden = false; document.body.classList.remove('nav-hidden'); });
 
   /* ---------- counters ---------- */
   const io = new IntersectionObserver(es => es.forEach(en => {

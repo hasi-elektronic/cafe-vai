@@ -37,7 +37,7 @@ body.kp{background:var(--bg);padding-bottom:calc(88px + env(safe-area-inset-bott
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;min-height:36px;padding:.42rem .85rem;border-radius:99px;border:1px solid var(--line);color:var(--muted);font-size:.78rem;white-space:nowrap;transition:.15s}
 .chip[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#14110a;font-weight:600}
-.count{font-size:.72rem;color:var(--muted);padding-top:2px;padding-bottom:2px}
+.kcount{font-size:.72rem;color:var(--muted);padding-top:2px;padding-bottom:2px}
 
 /* ---- Abschnitte ---- */
 .cats{max-width:1040px;margin:0 auto;padding:0 18px}
@@ -155,7 +155,6 @@ dialog h2{font-size:clamp(2rem,8vw,2.8rem);margin:.4rem 0 .5rem}
 /* ---- Einblenden ---- */
 .js .it.pre{opacity:0;transform:translateY(16px)}
 .js .it.pre.vis{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.rosette{bottom:calc(130px + env(safe-area-inset-bottom));left:10px;font-size:.58rem}
 
 /* ---- Desktop ---- */
 @media (min-width:620px){
@@ -171,10 +170,9 @@ dialog h2{font-size:clamp(2rem,8vw,2.8rem);margin:.4rem 0 .5rem}
   .it.big .add{grid-column:2;grid-row:2;justify-self:start;margin:6px 16px 14px}
   .tabs{top:0;bottom:auto;justify-content:center;border-top:0;border-bottom:1px solid var(--line);transform:translateY(-110%);transition:transform .4s var(--ease)}
   .tabs.show{transform:none}
-  .filter{top:54px}
+  body.kp .filter{top:54px}
   body.kp{padding-bottom:40px}
   .cartbar{bottom:20px}
-  .rosette{bottom:16px}
   .toastg{bottom:90px}
 }
 
@@ -202,3 +200,32 @@ body.kp .rosette{display:none}
 .demotag{font-style:normal;font-family:var(--sans);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--amber);border:1px solid rgba(227,168,63,.5);border-radius:99px;padding:.2em .6em}
 .filter .chips{flex-wrap:nowrap}
 .it.big .l1{font-size:1.25rem}@media (min-width:900px){.it.big .th{flex:0 0 42%;width:42%}.it.big .tx{padding:18px 18px 8px}}
+
+/* ---- Einbettung in die Startseite (#speisekarte) ---- */
+#speisekarte{background:var(--bg2);position:relative}
+#speisekarte .kh{max-width:1040px;margin:0 auto;padding:clamp(90px,13vh,150px) 18px 28px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+#speisekarte .kh h2{margin:12px 0 14px;font-size:clamp(2.6rem,7vw,5rem)}
+#speisekarte .kh .lang{flex:0 0 auto}
+#speisekarte .filter{top:68px;transition:top .4s var(--ease);background:rgba(16,20,18,.94)}
+body.nav-hidden #speisekarte .filter{top:0}
+#speisekarte .filter .tabs{position:static;transform:none;border:0;background:none;backdrop-filter:none;padding:8px 18px 2px;max-width:1040px;margin-inline:auto;justify-content:flex-start}
+#speisekarte .fchips{max-width:1040px;margin:0 auto;padding:6px 18px 0}
+#speisekarte .fchips .chips{padding-top:8px}
+#speisekarte .cats{padding-bottom:10px}
+#speisekarte .kfoot{margin-top:1.5rem;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between}
+#speisekarte .kfoot .links{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:760px){#speisekarte .kh{flex-direction:column}}
+
+/* ---- Variantenwahl direkt auf der Karte ---- */
+.pv.vsel{gap:6px;align-items:flex-end;padding:10px 4px 10px 4px}
+.vp{display:flex;align-items:baseline;justify-content:flex-end;gap:7px;white-space:nowrap;padding:.32rem .65rem;border-radius:10px;border:1px solid var(--line);background:none;min-height:34px;transition:background .15s,border-color .15s,color .15s}
+.vp small{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.vp b{font-size:.92rem;color:var(--amber);font-variant-numeric:tabular-nums;font-weight:700}
+.vp.on{background:var(--amber);border-color:var(--amber)}
+.vp.on small{color:#14110a;opacity:.75}.vp.on b{color:#14110a}
+.vp.on::before{content:"✓";font-size:.72rem;color:#14110a;font-weight:800;align-self:center}
+.it.big .pv.vsel{flex-direction:row;align-items:center}
+@media print{.vp{border:0;padding:0 0 0 6px;background:none!important;min-height:0}.vp::before{display:none}.vp b,.vp small{color:#111!important}.pv.vsel{flex-direction:row;gap:8px}}
+
+@media (max-width:760px){body:not(.kp) .rosette{display:none}}
+.brand .demotag{margin-left:2px}

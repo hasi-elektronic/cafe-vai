@@ -133,8 +133,10 @@ CATS = [
 def eur(c): return f"{c//100},{c%100:02d} €"
 def price_html(it):
     if it["vars"]:
-        return '<span class="pv">' + "".join(
-            f'<span class="pp"><small>{U(k)}</small><b>{eur(c)}</b></span>' for k, c in it["vars"]) + "</span>"
+        pills = "".join(
+            f'<button type="button" class="vp{" on" if i == 0 else ""}" data-v="{k}" aria-pressed="{"true" if i == 0 else "false"}"><small>{U(k)}</small><b>{eur(c)}</b></button>'
+            for i, (k, c) in enumerate(it["vars"]))
+        return f'<span class="pv vsel">{pills}</span>'
     return f'<span class="pv"><span class="pp"><b>{eur(it["c"])}</b></span></span>'
 def minc(it): return min(c for _, c in it["vars"]) if it["vars"] else it["c"]
 def tag(it, k): return k in it["badges"]
@@ -185,9 +187,32 @@ for ci, cat in enumerate(CATS):
     ft = ""
     if cat.get("foot"):
         fo = cat["foot"]; ft = f'<p class="gfoot"><span class="i" data-en="{esc(fo["en"])}" data-tr="{esc(fo["tr"])}">{esc(fo["de"])}</span></p>'
-    body.append(f'<section class="cat" id="{cat["id"]}" data-c="{cat["id"]}">{hero}<header class="ch"><span class="no">{ci+1:02d}</span><h2><span class="i" data-en="{esc(cat["t"]["en"])}" data-tr="{esc(cat["t"]["tr"])}">{esc(cat["t"]["de"])}</span></h2>{live}</header>{note}{ghtml}{ft}</section>')
+    body.append(f'<div class="cat" id="{cat["id"]}" data-c="{cat["id"]}">{hero}<header class="ch"><span class="no">{ci+1:02d}</span><h2><span class="i" data-en="{esc(cat["t"]["en"])}" data-tr="{esc(cat["t"]["tr"])}">{esc(cat["t"]["de"])}</span></h2>{live}</header>{note}{ghtml}{ft}</div>')
 
 chips = "".join(f'<button class="chip" type="button" data-f="{k}">{U(k)}</button>' for k in ("best", "veg", "home", "u10"))
+
+shared = f'''<div class="cartbar" id="cartbar" hidden><button type="button" id="cartopen"><span class="cn" id="cartn">0</span><span><b>{U("mylist")}</b><small id="carttot"></small></span><span class="go">{U("view")} →</span></button></div>
+
+<dialog id="dlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
+  <div class="dimg" id="dimg"></div>
+  <div class="dbody"><div class="dbd" id="dbd"></div><h2 id="dname"></h2><p class="dd" id="ddesc"></p>
+   <div class="opts" id="dopts"></div><div class="vars" id="dvars"></div>
+   <div class="dprice" id="dprice"></div><p class="allergen sm">{U("allergen")}</p>
+   <div class="dact"><button class="btn btn-amber" type="button" id="dadd">{U("add")}</button><button class="btn btn-ghost" type="button" id="dshare">{U("share")}</button></div></div></div></dialog>
+
+<dialog id="cdlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
+  <div class="dbody"><h2>{U("mylist")}</h2><ul class="clist" id="clist"></ul><p class="cempty" id="cempty">{U("empty")}</p>
+   <label class="tbl"><span>{U("table")}</span><input id="tbl" inputmode="numeric" maxlength="3" placeholder="–"></label>
+   <div class="ctotal"><span>{U("total")}</span><b id="ctot">0,00 €</b></div>
+   <div class="dact"><button class="btn btn-amber" type="button" id="cshow">{U("show")}</button><button class="btn btn-ghost" type="button" id="csend">{U("send")}</button></div>
+   <p class="toast" id="ctoast"></p></div></div></dialog>
+
+<dialog id="sdlg" class="slip"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
+  <div class="dbody"><div class="stbl" id="stbl"></div><ul class="slist" id="slist"></ul><div class="ctotal big"><span>{U("total")}</span><b id="stot"></b></div><p class="snote">{U("slipnote")}</p><p class="stime" id="stime"></p></div></div></dialog>
+
+'''
+toastg = '<div class="toastg" id="toastg" role="status"></div>'
+data_script = '<script type="application/json" id="kdata">' + json.dumps(DATA, ensure_ascii=False) + '</script>'
 
 page = f'''<!DOCTYPE html>
 <html lang="de">
@@ -225,7 +250,7 @@ page = f'''<!DOCTYPE html>
   <label class="srch"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   <input id="q" type="search" autocomplete="off" placeholder="{esc(UI['search'][0])}" data-ph-en="{esc(UI['search'][1])}" data-ph-tr="{esc(UI['search'][2])}"></label>
   <div class="chips" id="chips">{chips}</div>
-  <p class="count" id="count" aria-live="polite"></p>
+  <p class="kcount" id="kcnt" aria-live="polite"></p>
 </div>
 
 <div class="cats">
@@ -237,31 +262,17 @@ page = f'''<!DOCTYPE html>
 
 <nav class="tabs" id="tabs" aria-label="Kategorien">{"".join(tabs)}</nav>
 
-<div class="cartbar" id="cartbar" hidden><button type="button" id="cartopen"><span class="cn" id="cartn">0</span><span><b>{U("mylist")}</b><small id="carttot"></small></span><span class="go">{U("view")} →</span></button></div>
-
-<dialog id="dlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
-  <div class="dimg" id="dimg"></div>
-  <div class="dbody"><div class="dbd" id="dbd"></div><h2 id="dname"></h2><p class="dd" id="ddesc"></p>
-   <div class="opts" id="dopts"></div><div class="vars" id="dvars"></div>
-   <div class="dprice" id="dprice"></div><p class="allergen sm">{U("allergen")}</p>
-   <div class="dact"><button class="btn btn-amber" type="button" id="dadd">{U("add")}</button><button class="btn btn-ghost" type="button" id="dshare">{U("share")}</button></div></div></div></dialog>
-
-<dialog id="cdlg"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
-  <div class="dbody"><h2>{U("mylist")}</h2><ul class="clist" id="clist"></ul><p class="cempty" id="cempty">{U("empty")}</p>
-   <label class="tbl"><span>{U("table")}</span><input id="tbl" inputmode="numeric" maxlength="3" placeholder="–"></label>
-   <div class="ctotal"><span>{U("total")}</span><b id="ctot">0,00 €</b></div>
-   <div class="dact"><button class="btn btn-amber" type="button" id="cshow">{U("show")}</button><button class="btn btn-ghost" type="button" id="csend">{U("send")}</button></div>
-   <p class="toast" id="ctoast"></p></div></div></dialog>
-
-<dialog id="sdlg" class="slip"><div class="dwrap"><button class="x" type="button" data-close aria-label="{esc(UI['close'][0])}">×</button>
-  <div class="dbody"><div class="stbl" id="stbl"></div><ul class="slist" id="slist"></ul><div class="ctotal big"><span>{U("total")}</span><b id="stot"></b></div><p class="snote">{U("slipnote")}</p><p class="stime" id="stime"></p></div></div></dialog>
-
+{shared}
 <div class="rosette">Demo · GastrOptima</div>
-<div class="toastg" id="toastg" role="status"></div>
-<script type="application/json" id="kdata">{json.dumps(DATA, ensure_ascii=False)}</script>
+{toastg}
+{data_script}
 <script src="karte.js" defer></script>
 </body>
 </html>
 '''
 (out / "karte.html").write_text(page, encoding="utf-8")
+json.dump(dict(tabs="".join(tabs), chips=chips, body="\n".join(body), shared=shared, toastg=toastg, data=data_script,
+               allergen=U("allergen"), bf='<p class="bf" id="bfchip"><i></i><span id="bftxt"></span></p>',
+               none=U("none"), foot=U("foot"), printlbl=U("print"), search_ph=UI["search"], total=total),
+          open(pathlib.Path(__file__).parent / "parts.json", "w"), ensure_ascii=False)
 print("karte.html", len(page), "bytes,", total, "Positionen")

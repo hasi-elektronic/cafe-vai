@@ -18,7 +18,7 @@
   function setLang(l) {
     lang = l;
     try { localStorage.setItem('vai-lang', l); } catch (e) {}
-    document.documentElement.lang = l;
+    if (document.body.classList.contains('kp')) document.documentElement.lang = l;
     $$('.i').forEach(el => {
       if (el.dataset.de === undefined) el.dataset.de = el.textContent;
       el.textContent = l === 'de' ? el.dataset.de : (el.dataset[l] || el.dataset.de);
@@ -62,7 +62,7 @@
     });
     $('#none').hidden = vis > 0;
     const h = total - vis;
-    $('#count').textContent = t('count').replace('{v}', vis).replace('{t}', total) + (h ? ' · ' + t('hidden').replace('{h}', h) : '');
+    $('#kcnt').textContent = t('count').replace('{v}', vis).replace('{t}', total) + (h ? ' · ' + t('hidden').replace('{h}', h) : '');
   }
   $('#q').addEventListener('input', filter);
   $$('.chip').forEach(c => c.addEventListener('click', () => {
@@ -96,7 +96,8 @@
     if (it.vars && !v) v = it.vars[0][0];
     if (it.opts && o == null) o = 0;
     const k = key(id, v, o); const e = cart.get(k) || { id, v, o, n: 0 };
-    e.n++; cart.set(k, e); toast(t('added') + ': ' + nm(it)); renderCart();
+    e.n++; cart.set(k, e);
+    toast(nm(it) + [v ? ' · ' + vlabel(v) : '', o != null ? ' · ' + it.opts[o] : ''].join('') + ' ✓'); renderCart();
     if (navigator.vibrate) navigator.vibrate(12);
   }
   function renderCart() {
@@ -138,9 +139,9 @@
     $$('[data-close]', d).forEach(b => b.addEventListener('click', () => closeD(d)));
   });
   let cur = null, curV = null, curO = 0;
-  function showItem(id, push = true) {
+  function showItem(id, push = true, v = null) {
     const it = ITEMS[id]; cur = id;
-    curV = it.vars ? it.vars[0][0] : null; curO = 0;
+    curV = it.vars ? (v && it.vars.some(x => x[0] === v) ? v : it.vars[0][0]) : null; curO = 0;
     drawItem();
     openD($('#dlg'));
     if (push) history.replaceState(null, '', '?g=' + id + (lang !== 'de' ? '&l=' + lang : ''));
@@ -167,12 +168,15 @@
   $('#dlg').addEventListener('close', () => { history.replaceState(null, '', location.pathname + (lang !== 'de' ? '?l=' + lang : '')); });
 
   document.addEventListener('click', e => {
-    const o = e.target.closest('[data-open]'); if (o) { showItem(o.dataset.open); return; }
+    const o = e.target.closest('[data-open]'); if (o) { const li = o.closest('.it'); const sp = li && li.querySelector('.vp.on'); showItem(o.dataset.open, true, sp ? sp.dataset.v : null); return; }
+    const vp = e.target.closest('.vp');
+    if (vp) { $$('.vp', vp.parentElement).forEach(x => { const on = x === vp; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); return; }
     const a = e.target.closest('[data-add]');
     if (a) {
-      const it = ITEMS[a.dataset.add];
-      if (it.vars || it.opts) { showItem(a.dataset.add, false); return; }
-      add(a.dataset.add); a.classList.add('ok'); setTimeout(() => a.classList.remove('ok'), 500);
+      const it = ITEMS[a.dataset.add]; const li = a.closest('.it');
+      const sel = li && li.querySelector('.vp.on'); const v = sel ? sel.dataset.v : null;
+      if (it.opts) { showItem(a.dataset.add, false, v); return; }
+      add(a.dataset.add, v); a.classList.add('ok'); setTimeout(() => a.classList.remove('ok'), 500);
     }
   });
   $('#cartopen').addEventListener('click', () => { renderCart(); openD($('#cdlg')); });
@@ -197,7 +201,7 @@
   });
 
   /* ---------- Reiterleiste: Scroll-Spy ---------- */
-  const tabs = $('#tabs'), cats = $$('.cat'), hero = $('.hero-k'), bar = $('#bar');
+  const tabs = $('#tabs'), cats = $$('.cat'), hero = $('.hero-k'), bar = $('#bar'), own = document.body.classList.contains('kp');
   function spy() {
     const y = innerHeight * 0.35; let cur = null;
     cats.forEach(c => { if (!c.hidden && c.getBoundingClientRect().top < y) cur = c.dataset.c; });
@@ -206,13 +210,13 @@
       if (on && !a._seen) { a._seen = 1; tabs.scrollTo({ left: a.offsetLeft - tabs.clientWidth / 2 + a.clientWidth / 2, behavior: rm ? 'auto' : 'smooth' }); }
       if (!on) a._seen = 0;
     });
-    tabs.classList.toggle('show', scrollY > hero.offsetHeight * 0.6);
-    bar.style.transform = `scaleX(${Math.min(1, scrollY / (document.documentElement.scrollHeight - innerHeight))})`;
+    if (hero) tabs.classList.toggle('show', scrollY > hero.offsetHeight * 0.6);
+    if (own) bar.style.transform = `scaleX(${Math.min(1, scrollY / (document.documentElement.scrollHeight - innerHeight))})`;
   }
   addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy);
   $$('a', tabs).forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
-    const c = $(a.getAttribute('href')); window.scrollTo({ top: c.getBoundingClientRect().top + scrollY - (innerWidth >= 900 ? 175 : 150), behavior: rm ? 'auto' : 'smooth' });
+    const c = $(a.getAttribute('href')); window.scrollTo({ top: c.getBoundingClientRect().top + scrollY - (own ? (innerWidth >= 900 ? 175 : 150) : (innerWidth >= 900 ? 150 : 140)), behavior: rm ? 'auto' : 'smooth' });
   }));
 
   /* ---------- Einblenden ---------- */
