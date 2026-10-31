@@ -348,7 +348,7 @@ index = f'''<!DOCTYPE html>
 </footer>
 
 <div class="rosette">Demo · GastrOptima</div>
-<div class="dock" id="dock"><a class="d-karte" href="karte">Karte &amp; Bestellen</a><a class="d-res" href="#besuch">Reservieren</a><a class="d-tel" href="tel:+4970421204640" aria-label="Anrufen">☎</a></div>
+<div class="dock" id="dock"><a class="d-karte" href="karte"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8.5 9h7M8.5 13h7M8.5 16.5h4"/></svg><span>Karte &amp; Bestellen</span></a><a class="d-res" href="#besuch"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg><span>Reservieren</span></a><a class="d-wa" href="https://wa.me/491791564135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v11H10l-4.5 3.5v-3.5H4z"/><path d="M8.5 10h7M8.5 13h4"/></svg><span>WhatsApp</span></a></div>
 <script src="script.js" defer></script>
 </body>
 </html>
